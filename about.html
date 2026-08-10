@@ -1,1 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us | DJML Foundation</title>
 
+    <!-- SEO Meta -->
+    <meta name="description" content="Learn about the Deng Johnson Malual Leek Foundation — our mission, vision, values, and the story behind our commitment to South Sudan." />
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+    <style>
+        /* ============================================
+                   ROOT VARIABLES & RESET
+                   ============================================ */
+        :root {
+            --navy: #0d1b3e;
+            --navy-light: #1a2a6c;
+            --gold: #f4c430;
+            --gold-dark: #d4a820;
+            --gold-light: #fada5e;
+            --gold-gradient: linear-gradient(135deg, #f4c430, #d4a820);
+            --white: #ffffff;
+            --off-white: #f8f6f0;
+            --gray: #888888;
+            --gray-light: #e8e5dc;
+            --shadow-gold: 0 8px 32px rgba(244, 196, 48, 0.25);
+            --shadow-dark: 0 20px 60px rgba(13, 27, 62, 0.15);
+            --radius: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            color: #1a1a2e;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ============================================
+                   UTILITY
+                   ============================================ */
+        .gold-text {
+            color: var(--gold);
+        }
+        .section-padding {
+            padding: 80px 0;
+        }
+        .section-padding-sm {
+            padding: 60px 0;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid rgba(244, 196, 48, 0.25);
+            padding: 4px 18px;
+            border-radius: 50px;
+            margin-bottom: 16px;
+            background: rgba(244, 196, 48, 0.06);
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            color: var(--navy);
+        }
+        .section-title .gold-text {
+            position: relative;
+            display: inline-block;
+        }
+        .section-title .gold-text::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gold-gradient);
+            border-radius: 2px;
+        }
+
+        .section-sub {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 640px;
+            line-height: 1.8;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 34px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            justify-content: center;
+        }
+        .btn-primary {
+            background: var(--gold-gradient);
+            color: var(--navy);
+            box-shadow: var(--shadow-gold);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(244, 196, 48, 0.4);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--navy);
+            border-color: var(--navy);
+        }
+        .btn-outline:hover {
+            background: var(--navy);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+        .btn-navy {
+            background: var(--navy);
+            color: var(--white);
+        }
+        .btn-navy:hover {
+            background: var(--navy-light);
+            transform: translateY(-3px);
+        }
+
+        /* ============================================
+                   NAVBAR (Shared)
+                   ============================================ */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 14px 0;
+            background: rgba(13, 27, 62, 0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 2px solid rgba(244, 196, 48, 0.15);
+            transition: var(--transition);
+        }
+        .navbar.scrolled {
+            background: rgba(13, 27, 62, 0.98);
+            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.3);
+        }
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .navbar-brand .stars {
+            color: var(--gold);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+        .navbar-brand .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+        .navbar-brand .brand-main {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 0.5px;
+        }
+        .navbar-brand .brand-sub {
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: var(--gold);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: none;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+        .nav-links a {
+            padding: 8px 18px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.7);
+            border-radius: 50px;
+            transition: var(--transition);
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: var(--transition);
+        }
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 60%;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--white);
+        }
+        .nav-links a.active {
+            color: var(--gold);
+        }
+
+        .nav-cta {
+            background: var(--gold-gradient) !important;
+            color: var(--navy) !important;
+            font-weight: 700 !important;
+            padding: 8px 24px !important;
+            border-radius: 50px !important;
+        }
+        .nav-cta::after {
+            display: none !important;
+        }
+        .nav-cta:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 6px;
+            background: none;
+            border: none;
+        }
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--white);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 320px;
+            max-width: 80%;
+            height: 100vh;
+            background: var(--navy);
+            padding: 80px 32px 32px;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 999;
+            border-left: 2px solid rgba(244, 196, 48, 0.15);
+            overflow-y: auto;
+        }
+        .mobile-menu.open {
+            right: 0;
+        }
+        .mobile-menu .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.6rem;
+            color: var(--gray);
+        }
+        .mobile-menu ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .mobile-menu ul a {
+            display: block;
+            padding: 14px 16px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--off-white);
+            border-radius: var(--radius);
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+        .mobile-menu ul a:hover {
+            background: rgba(244, 196, 48, 0.08);
+            border-left-color: var(--gold);
+            color: var(--gold);
+        }
+        .mobile-menu .social-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .mobile-menu .social-row a {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+        .mobile-menu .social-row a:hover {
+            color: var(--gold);
+            background: rgba(244, 196, 48, 0.12);
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+        .overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (min-width: 992px) {
+            .nav-links {
+                display: flex;
+            }
+            .hamburger {
+                display: none;
+            }
+            .mobile-menu,
+            .overlay {
+                display: none !important;
+            }
+        }
+
+        /* ============================================
+                   PAGE HEADER
+                   ============================================ */
+        .page-header {
+            background: var(--navy);
+            padding: 140px 0 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 3px solid var(--gold);
+        }
+        .page-header::before {
+            content: '⭐⭐';
+            position: absolute;
+            font-size: 200px;
+            opacity: 0.03;
+            right: -60px;
+            bottom: -80px;
+            pointer-events: none;
+        }
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.4rem, 5vw, 3.6rem);
+            color: var(--white);
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+        .page-header h1 .gold-text {
+            color: var(--gold);
+        }
+        .page-header p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 12px auto 0;
+            position: relative;
+            z-index: 1;
+        }
+        .page-header .breadcrumb {
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+        .page-header .breadcrumb a {
+            color: rgba(255, 255, 255, 0.5);
+            transition: var(--transition);
+        }
+        .page-header .breadcrumb a:hover {
+            color: var(--gold);
+        }
+        .page-header .breadcrumb .sep {
+            margin: 0 8px;
+        }
+        .page-header .breadcrumb .current {
+            color: var(--gold);
+        }
+
+        /* ============================================
+                   ABOUT STORY
+                   ============================================ */
+        .about-story {
+            padding: 80px 0;
+            background: var(--white);
+        }
+        .about-story-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        @media (min-width: 768px) {
+            .about-story-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .about-image-wrapper {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-dark);
+        }
+        .about-image-wrapper img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        .about-image-wrapper .badge-float {
+            position: absolute;
+            bottom: 24px;
+            left: 24px;
+            background: var(--gold-gradient);
+            color: var(--navy);
+            padding: 12px 24px;
+            border-radius: var(--radius);
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: var(--shadow-gold);
+        }
+        .about-image-wrapper .badge-float i {
+            margin-right: 8px;
+        }
+
+        .about-text h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--navy);
+            margin-bottom: 16px;
+        }
+        .about-text p {
+            color: #555;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+        .about-text .signature {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--gold);
+            margin-top: 16px;
+            font-style: italic;
+        }
+
+        /* ============================================
+                   MISSION VISION VALUES
+                   ============================================ */
+        .mvv-section {
+            background: var(--off-white);
+            padding: 80px 0;
+        }
+        .mvv-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-top: 48px;
+        }
+        @media (min-width: 768px) {
+            .mvv-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .mvv-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 40px 32px;
+            text-align: center;
+            box-shadow: var(--shadow-dark);
+            border: 1px solid rgba(13, 27, 62, 0.04);
+            transition: var(--transition);
+        }
+        .mvv-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 30px 60px rgba(13, 27, 62, 0.12);
+        }
+        .mvv-card .icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            display: block;
+        }
+        .mvv-card .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(244, 196, 48, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            margin: 0 auto 16px;
+        }
+        .mvv-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        .mvv-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* ============================================
+                   TEAM SECTION
+                   ============================================ */
+        .team-section {
+            padding: 80px 0;
+            background: var(--white);
+        }
+        .team-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-top: 48px;
+        }
+        @media (min-width: 480px) {
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 768px) {
+            .team-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (min-width: 1024px) {
+            .team-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .team-card {
+            background: var(--off-white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid rgba(13, 27, 62, 0.04);
+        }
+        .team-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-dark);
+        }
+        .team-card .photo {
+            width: 100%;
+            height: 260px;
+            background: var(--gray-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--gray);
+        }
+        .team-card .photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .team-card .info {
+            padding: 24px 20px 28px;
+        }
+        .team-card .info h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--navy);
+            margin-bottom: 2px;
+        }
+        .team-card .info .role {
+            font-size: 0.85rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+        .team-card .info p {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 8px;
+            line-height: 1.6;
+        }
+        .team-card .info .social {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 12px;
+        }
+        .team-card .info .social a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(13, 27, 62, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        .team-card .info .social a:hover {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        /* ============================================
+                   TIMELINE / HISTORY
+                   ============================================ */
+        .history-section {
+            background: var(--off-white);
+            padding: 80px 0;
+        }
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 48px auto 0;
+            padding-left: 40px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--gold);
+            opacity: 0.2;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            padding-left: 20px;
+        }
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 6px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--gold);
+            border: 3px solid var(--white);
+            box-shadow: 0 0 0 4px var(--gold);
+        }
+        .timeline-item .year {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 4px;
+        }
+        .timeline-item h4 {
+            font-size: 1.1rem;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+        .timeline-item p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* ============================================
+                   CTA BANNER
+                   ============================================ */
+        .cta-banner {
+            padding: 60px 0;
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            border-top: 3px solid var(--gold);
+            border-bottom: 3px solid var(--gold);
+            text-align: center;
+        }
+        .cta-banner h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--white);
+            font-size: clamp(1.8rem, 3vw, 2.8rem);
+            margin-bottom: 12px;
+        }
+        .cta-banner p {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 28px;
+            font-size: 1.1rem;
+        }
+
+        /* ============================================
+                   FOOTER
+                   ============================================ */
+        .footer {
+            background: #0a1528;
+            color: rgba(255, 255, 255, 0.5);
+            padding: 40px 0 20px;
+        }
+        .footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .footer .gold {
+            color: var(--gold);
+        }
+        .footer a {
+            color: rgba(255, 255, 255, 0.4);
+            transition: var(--transition);
+        }
+        .footer a:hover {
+            color: var(--gold);
+        }
+
+        /* ============================================
+                   BACK TO TOP
+                   ============================================ */
+        .back-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gold-gradient);
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow-gold);
+            z-index: 900;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+        .back-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .back-top:hover {
+            transform: translateY(-4px) scale(1.05);
+        }
+
+        /* ============================================
+                   RESPONSIVE
+                   ============================================ */
+        @media (max-width: 480px) {
+            .section-padding {
+                padding: 50px 0;
+            }
+            .page-header {
+                padding: 100px 0 40px;
+            }
+            .about-image-wrapper img {
+                height: 250px;
+            }
+            .about-image-wrapper .badge-float {
+                font-size: 0.75rem;
+                padding: 8px 16px;
+                bottom: 16px;
+                left: 16px;
+            }
+            .timeline {
+                padding-left: 24px;
+            }
+            .timeline-item::before {
+                left: -20px;
+                width: 12px;
+                height: 12px;
+            }
+            .team-card .photo {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== OVERLAY ===== -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- ===== MOBILE MENU ===== -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="close-btn" id="closeMenu" aria-label="Close menu">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html" class="active">About</a></li>
+            <li><a href="programs.html">Programs</a></li>
+            <li><a href="impact.html">Impact</a></li>
+            <li><a href="testimonials.html">Testimonials</a></li>
+            <li><a href="donate.html" style="color:var(--gold);">Donate</a></li>
+        </ul>
+        <div class="social-row">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+        </div>
+    </div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <span class="stars">⭐⭐</span>
+                <div class="brand-text">
+                    <span class="brand-main">DENG JOHNSON MALUAL LEEK</span>
+                    <span class="brand-sub">FOUNDATION</span>
+                </div>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="programs.html">Programs</a></li>
+                <li><a href="impact.html">Impact</a></li>
+                <li><a href="testimonials.html">Testimonials</a></li>
+                <li><a href="donate.html" class="nav-cta">Donate</a></li>
+            </ul>
+
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span class="sep">/</span>
+                <span class="current">About Us</span>
+            </div>
+            <h1>About <span class="gold-text">Our Foundation</span></h1>
+            <p>Learn about our mission, vision, values, and the story behind our commitment to South Sudan.</p>
+        </div>
+    </section>
+
+    <!-- ===== ABOUT STORY ===== -->
+    <section class="about-story">
+        <div class="container">
+            <div class="about-story-grid">
+                <div class="about-image-wrapper" data-aos="fade-right">
+                    <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800&h=600&fit=crop&crop=center" alt="DJML Foundation Team" loading="lazy" />
+                    <div class="badge-float">
+                        <i class="fas fa-heart"></i> Since 2020
+                    </div>
+                </div>
+
+                <div class="about-text" data-aos="fade-left">
+                    <span class="section-label">Our Story</span>
+                    <h3>Dedicated to <span class="gold-text">Transforming Lives</span></h3>
+                    <p>
+                        The Deng Johnson Malual Leek Foundation was founded with a singular vision:
+                        <strong>to foster sustainable development and social progress in South Sudan</strong>.
+                        What began as a personal commitment to give back has grown into a
+                        comprehensive non-profit organization serving thousands of people across the country.
+                    </p>
+                    <p>
+                        Our founder, Deng Johnson Malual Leek, witnessed firsthand the challenges
+                        facing his community — lack of access to education, healthcare, and economic
+                        opportunity. Determined to make a difference, he established the foundation
+                        to create lasting, meaningful change.
+                    </p>
+                    <p>
+                        Today, we work tirelessly to empower communities through education,
+                        health initiatives, and community development programs. Every project
+                        we undertake is driven by a deep commitment to dignity, equity,
+                        and the belief that every person deserves a chance to thrive.
+                    </p>
+                    <div class="signature">— Deng Johnson Malual Leek</div>
+                    <div style="margin-top:20px; display:flex; gap:12px; flex-wrap:wrap;">
+                        <a href="programs.html" class="btn btn-primary">
+                            <i class="fas fa-book-open"></i> Our Programs
+                        </a>
+                        <a href="donate.html" class="btn btn-outline">
+                            <i class="fas fa-hand-holding-heart"></i> Support Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== MISSION VISION VALUES ===== -->
+    <section class="mvv-section">
+        <div class="container">
+            <div style="text-align:center;" data-aos="fade-up">
+                <span class="section-label">Our Guiding Principles</span>
+                <h2 class="section-title">Mission · Vision · <span class="gold-text">Values</span></h2>
+                <p class="section-sub" style="margin:0 auto;">The principles that guide everything we do.</p>
+            </div>
+
+            <div class="mvv-grid">
+                <div class="mvv-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="icon-wrapper">🎯</div>
+                    <h3>Our Mission</h3>
+                    <p>To foster sustainable development and social progress in South Sudan through education, healthcare, and community empowerment initiatives.</p>
+                </div>
+                <div class="mvv-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-wrapper">👁️</div>
+                    <h3>Our Vision</h3>
+                    <p>A South Sudan where every community has access to quality education, healthcare, and economic opportunity, enabling all people to thrive.</p>
+                </div>
+                <div class="mvv-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="icon-wrapper">💛</div>
+                    <h3>Our Values</h3>
+                    <p>Integrity, compassion, collaboration, and accountability. We believe in transparency, respect for all people, and the power of community.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== HISTORY TIMELINE ===== -->
+    <section class="history-section">
+        <div class="container">
+            <div style="text-align:center;" data-aos="fade-up">
+                <span class="section-label">Our Journey</span>
+                <h2 class="section-title">A History of <span class="gold-text">Impact</span></h2>
+                <p class="section-sub" style="margin:0 auto;">Milestones that have shaped our foundation.</p>
+            </div>
+
+            <div class="timeline" data-aos="fade-up">
+                <div class="timeline-item">
+                    <div class="year">2020</div>
+                    <h4>Foundation Established</h4>
+                    <p>The Deng Johnson Malual Leek Foundation was officially founded with a mission to serve communities across South Sudan.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2021</div>
+                    <h4>First Education Program Launched</h4>
+                    <p>Partnered with local schools to provide scholarships, school supplies, and teacher training to underprivileged communities.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2022</div>
+                    <h4>Health &amp; Wellness Initiative</h4>
+                    <p>Expanded into healthcare, delivering essential medical services, maternal care, and health education to remote areas.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2023</div>
+                    <h4>Community Development Programs</h4>
+                    <p>Launched peace-building workshops, economic empowerment projects, and infrastructure support across 12 communities.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2024</div>
+                    <h4>Expansion &amp; Partnership Growth</h4>
+                    <p>Partnered with international NGOs and local organizations to scale impact, reaching over 5,000 lives.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2025</div>
+                    <h4>Today — Building a Brighter Future</h4>
+                    <p>Continuing to expand our programs and deepen our impact, always guided by our mission to serve South Sudan.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TEAM SECTION ===== -->
+    <section class="team-section">
+        <div class="container">
+            <div style="text-align:center;" data-aos="fade-up">
+                <span class="section-label">Our Team</span>
+                <h2 class="section-title">Meet the <span class="gold-text">Team</span></h2>
+                <p class="section-sub" style="margin:0 auto;">The passionate individuals behind our mission.</p>
+            </div>
+
+            <div class="team-grid">
+                <!-- Team Member 1 -->
+                <div class="team-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="photo">
+                        <span>👤</span>
+                    </div>
+                    <div class="info">
+                        <h4>Deng Johnson Malual Leek</h4>
+                        <div class="role">Founder &amp; Executive Director</div>
+                        <p>Visionary leader dedicated to transforming lives across South Sudan through education and community development.</p>
+                        <div class="social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-x-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="team-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="photo">
+                        <span>👤</span>
+                    </div>
+                    <div class="info">
+                        <h4>Bol Leek Deng Malual</h4>
+                        <div class="role">Programs Director</div>
+                        <p>Leads the design and implementation of education, health, and community programs across South Sudan.</p>
+                        <div class="social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-x-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 3 -->
+                <div class="team-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="photo">
+                        <span>👤</span>
+                    </div>
+                    <div class="info">
+                        <h4>Captain Leek Edward Chuol</h4>
+                        <div class="role">Community Outreach Lead</div>
+                        <p>Builds relationships with local communities and partners to ensure programs reach those who need them most.</p>
+                        <div class="social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-x-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 4 -->
+                <div class="team-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="photo">
+                        <span>👤</span>
+                    </div>
+                    <div class="info">
+                        <h4>Deng Matit Gutchuor</h4>
+                        <div class="role">Operations Manager</div>
+                        <p>Oversees day-to-day operations, ensuring efficient delivery of programs and resources to communities.</p>
+                        <div class="social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-x-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin-top:40px;" data-aos="fade-up">
+                <p style="color:var(--gray); font-size:0.95rem;">
+                    <i class="fas fa-users" style="color:var(--gold);"></i>
+                    Join our team of <strong>50+ volunteers</strong> making a difference every day.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA BANNER ===== -->
+    <section class="cta-banner" data-aos="zoom-in">
+        <div class="container">
+            <h2>Join Us in <span style="color: var(--gold);">Making a Difference</span></h2>
+            <p>Be part of the change. Your support helps us transform lives across South Sudan.</p>
+            <a href="donate.html" class="btn btn-primary">
+                <i class="fas fa-hand-holding-heart"></i> Support Our Mission
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <span>&copy; 2026 <span class="gold">Deng Johnson Malual Leek Foundation</span></span>
+            <div>
+                <a href="index.html">Home</a> &middot;
+                <a href="about.html" style="color:var(--gold);">About</a> &middot;
+                <a href="programs.html">Programs</a> &middot;
+                <a href="impact.html">Impact</a> &middot;
+                <a href="testimonials.html">Testimonials</a> &middot;
+                <a href="donate.html">Donate</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== BACK TO TOP ===== -->
+    <button class="back-top" id="backTop" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- ===== AOS ===== -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- ============================================
+               JAVASCRIPT
+               ============================================ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // ===== AOS INIT =====
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 80
+            });
+
+            // ===== MOBILE MENU =====
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const overlay = document.getElementById('overlay');
+            const closeMenu = document.getElementById('closeMenu');
+
+            function openMenu() {
+                mobileMenu.classList.add('open');
+                overlay.classList.add('open');
+                hamburger.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeMenuFn() {
+                mobileMenu.classList.remove('open');
+                overlay.classList.remove('open');
+                hamburger.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            hamburger.addEventListener('click', openMenu);
+            closeMenu.addEventListener('click', closeMenuFn);
+            overlay.addEventListener('click', closeMenuFn);
+
+            mobileMenu.querySelectorAll('a').forEach(function(link) {
+                link.addEventListener('click', closeMenuFn);
+            });
+
+            // ===== NAVBAR SCROLL =====
+            const navbar = document.getElementById('navbar');
+
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // ===== BACK TO TOP =====
+            const backTop = document.getElementById('backTop');
+
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 400) {
+                    backTop.classList.add('visible');
+                } else {
+                    backTop.classList.remove('visible');
+                }
+            });
+
+            backTop.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            console.log('📖 DJML Foundation — About Page');
+            console.log('👥 Team members and history loaded.');
+
+        });
+    </script>
+
+</body>
+</html>
