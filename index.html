@@ -3,21 +3,24 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DJML Foundation | Deng Johnson Malual Leek</title>
+    <title>DJML Foundation | Empowering South Sudan's Future</title>
 
     <!-- SEO Meta -->
-    <meta name="description" content="Deng Johnson Malual Leek Foundation — Empowering South Sudan through education, health, and community development. Join us in building a brighter future." />
+    <meta name="description" content="Deng Johnson Malual Leek Foundation — Empowering South Sudan through education, health, and community development." />
     <meta property="og:title" content="DJML Foundation | Empowering South Sudan's Future" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://djmlfoundation.org" />
 
-    <!-- Font Awesome 6 (Free) -->
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 
     <style>
         /* ============================================
@@ -91,7 +94,7 @@
             color: var(--gold);
         }
         .section-padding {
-            padding: 80px 0;
+            padding: 100px 0;
         }
         .section-padding-sm {
             padding: 60px 0;
@@ -172,19 +175,17 @@
             color: var(--gold);
             transform: translateY(-3px);
         }
-        .btn-navy-outline {
-            background: transparent;
-            color: var(--navy);
-            border-color: var(--navy);
-        }
-        .btn-navy-outline:hover {
+        .btn-navy {
             background: var(--navy);
             color: var(--white);
+        }
+        .btn-navy:hover {
+            background: var(--navy-light);
             transform: translateY(-3px);
         }
 
         /* ============================================
-                   LOADER
+                   PRE-LOADER
                    ============================================ */
         .loader {
             position: fixed;
@@ -195,7 +196,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
         }
         .loader.hidden {
             opacity: 0;
@@ -216,6 +217,21 @@
             font-size: 1.4rem;
             letter-spacing: 4px;
             color: var(--gold);
+        }
+        .loader-progress {
+            width: 200px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-top: 16px;
+            overflow: hidden;
+        }
+        .loader-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--gold-gradient);
+            border-radius: 4px;
+            transition: width 0.3s ease;
         }
         @keyframes spin {
             to {
@@ -239,6 +255,11 @@
             border-bottom: 2px solid rgba(244, 196, 48, 0.15);
             transition: var(--transition);
         }
+        .navbar.scrolled {
+            background: rgba(13, 27, 62, 0.98);
+            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.3);
+        }
+
         .navbar .container {
             display: flex;
             align-items: center;
@@ -274,18 +295,6 @@
             letter-spacing: 3px;
             text-transform: uppercase;
         }
-        @media (max-width: 480px) {
-            .navbar-brand .brand-main {
-                font-size: 0.95rem;
-            }
-            .navbar-brand .brand-sub {
-                font-size: 0.5rem;
-                letter-spacing: 2px;
-            }
-            .navbar-brand .stars {
-                font-size: 0.9rem;
-            }
-        }
 
         .nav-links {
             display: none;
@@ -301,11 +310,26 @@
             border-radius: 50px;
             transition: var(--transition);
             letter-spacing: 0.3px;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: var(--transition);
+        }
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 60%;
         }
         .nav-links a:hover,
         .nav-links a.active {
             color: var(--white);
-            background: rgba(244, 196, 48, 0.08);
         }
         .nav-links a.active {
             color: var(--gold);
@@ -318,15 +342,12 @@
             padding: 8px 24px !important;
             border-radius: 50px !important;
         }
+        .nav-cta::after {
+            display: none !important;
+        }
         .nav-cta:hover {
             transform: scale(1.05);
             box-shadow: var(--shadow-gold);
-        }
-
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
         }
 
         .hamburger {
@@ -454,7 +475,7 @@
         }
 
         /* ============================================
-                   HERO WITH ROTATING BANNERS
+                   HERO WITH ROTATING BANNERS + PARALLAX
                    ============================================ */
         .hero {
             min-height: 100vh;
@@ -466,7 +487,6 @@
             background: var(--navy);
         }
 
-        /* Hero Background Slideshow */
         .hero-slideshow {
             position: absolute;
             inset: 0;
@@ -481,15 +501,18 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            transform: scale(1.05);
+            transition: opacity 1.5s ease, transform 8s ease;
         }
         .hero-slideshow .slide.active {
             opacity: 1;
+            transform: scale(1);
         }
         .hero-slideshow .slide::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: rgba(13, 27, 62, 0.7);
+            background: rgba(13, 27, 62, 0.65);
         }
         .hero-slideshow .slide::before {
             content: '';
@@ -501,7 +524,6 @@
             z-index: 1;
         }
 
-        /* Slide dots */
         .slide-dots {
             position: absolute;
             bottom: 40px;
@@ -509,21 +531,33 @@
             transform: translateX(-50%);
             z-index: 5;
             display: flex;
-            gap: 12px;
+            gap: 14px;
         }
         .slide-dots .dot {
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.05);
             cursor: pointer;
             transition: var(--transition);
+            position: relative;
+        }
+        .slide-dots .dot::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+        .slide-dots .dot.active::after {
+            border-color: var(--gold);
         }
         .slide-dots .dot.active {
             background: var(--gold);
             border-color: var(--gold);
-            box-shadow: 0 0 20px rgba(244, 196, 48, 0.3);
+            box-shadow: 0 0 30px rgba(244, 196, 48, 0.3);
             transform: scale(1.2);
         }
 
@@ -547,6 +581,7 @@
             letter-spacing: 0.5px;
             margin-bottom: 24px;
             border: 1px solid rgba(244, 196, 48, 0.12);
+            backdrop-filter: blur(8px);
         }
         .hero-badge .dot {
             width: 8px;
@@ -574,6 +609,8 @@
             line-height: 1.05;
             margin-bottom: 20px;
             color: var(--white);
+            opacity: 0;
+            animation: fadeUp 1s ease 0.2s forwards;
         }
         .hero h1 .highlight {
             background: var(--gold-gradient);
@@ -581,17 +618,32 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .hero p {
             font-size: clamp(1rem, 1.4vw, 1.25rem);
             color: rgba(255, 255, 255, 0.7);
             max-width: 580px;
             line-height: 1.8;
             margin-bottom: 36px;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.4s forwards;
         }
         .hero-buttons {
             display: flex;
             flex-wrap: wrap;
             gap: 14px;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.6s forwards;
         }
 
         .hero-stats {
@@ -601,6 +653,8 @@
             margin-top: 56px;
             padding-top: 40px;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
+            opacity: 0;
+            animation: fadeUp 1s ease 0.8s forwards;
         }
         .hero-stats .stat {
             display: flex;
@@ -620,13 +674,80 @@
             font-weight: 400;
         }
 
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            animation: bounceDown 2.5s infinite;
+        }
+        .scroll-indicator .mouse {
+            width: 22px;
+            height: 34px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            position: relative;
+        }
+        .scroll-indicator .mouse::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 8px;
+            background: var(--gold);
+            border-radius: 2px;
+            animation: scrollWheel 1.8s infinite;
+        }
+        @keyframes scrollWheel {
+            0% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(16px);
+            }
+        }
+        @keyframes bounceDown {
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(6px);
+            }
+        }
+
         /* ============================================
-                   MISSION STRIP
+                   MISSION STRIP (Parallax)
                    ============================================ */
         .mission-strip {
             background: var(--navy);
-            padding: 50px 0;
+            padding: 60px 0;
             border-bottom: 3px solid var(--gold);
+            position: relative;
+            overflow: hidden;
+        }
+        .mission-strip::before {
+            content: '⭐⭐';
+            position: absolute;
+            font-size: 300px;
+            opacity: 0.03;
+            right: -80px;
+            bottom: -100px;
+            pointer-events: none;
         }
         .mission-strip .container {
             display: flex;
@@ -634,6 +755,8 @@
             justify-content: space-between;
             gap: 40px;
             flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
         }
         .mission-text {
             flex: 1;
@@ -649,7 +772,7 @@
             color: var(--gold);
         }
         .mission-text p {
-            color: rgba(255, 255, 255, 0.65);
+            color: rgba(255, 255, 255, 0.6);
             margin-top: 12px;
             font-size: 1rem;
         }
@@ -670,7 +793,7 @@
             line-height: 1;
         }
         .stat-item .label {
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.4);
             font-size: 0.7rem;
             font-weight: 500;
             letter-spacing: 1px;
@@ -679,15 +802,26 @@
         }
 
         /* ============================================
-                   PROGRAMS
+                   PROGRAMS (Hover 3D Tilt)
                    ============================================ */
         .programs-section {
             background: var(--off-white);
+            position: relative;
         }
+        .programs-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gold-gradient);
+        }
+
         .programs-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 24px;
+            gap: 30px;
             margin-top: 48px;
         }
         @media (min-width: 640px) {
@@ -704,11 +838,13 @@
         .program-card {
             background: var(--white);
             border-radius: var(--radius-lg);
-            padding: 36px 28px;
+            padding: 40px 32px;
             border: 1px solid rgba(13, 27, 62, 0.06);
             transition: var(--transition);
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
+            perspective: 800px;
         }
         .program-card::before {
             content: '';
@@ -726,14 +862,25 @@
             transform: scaleX(1);
         }
         .program-card:hover {
-            transform: translateY(-6px);
+            transform: translateY(-8px) rotateX(2deg);
             box-shadow: var(--shadow-dark);
             border-color: rgba(244, 196, 48, 0.2);
         }
         .program-card .icon {
-            font-size: 2.8rem;
+            font-size: 3rem;
             margin-bottom: 16px;
             display: block;
+        }
+        .program-card .icon-wrapper {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            background: rgba(244, 196, 48, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            margin-bottom: 18px;
         }
         .program-card h3 {
             font-family: 'Playfair Display', serif;
@@ -762,7 +909,7 @@
         }
 
         /* ============================================
-                   IMPACT SECTION
+                   IMPACT SECTION (Parallax Counters)
                    ============================================ */
         .impact-section {
             background: var(--navy);
@@ -779,17 +926,26 @@
             bottom: -150px;
             pointer-events: none;
         }
+        .impact-section .bg-pattern {
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(244, 196, 48, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(244, 196, 48, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+        }
         .impact-section .section-title {
             color: var(--white);
         }
         .impact-section .section-sub {
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.5);
             margin: 0 auto;
         }
+
         .impact-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
+            gap: 40px;
             max-width: 800px;
             margin: 48px auto 0;
         }
@@ -797,6 +953,20 @@
             .impact-grid {
                 grid-template-columns: repeat(4, 1fr);
             }
+        }
+
+        .impact-item {
+            position: relative;
+            padding: 20px;
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: var(--transition);
+        }
+        .impact-item:hover {
+            background: rgba(244, 196, 48, 0.04);
+            border-color: rgba(244, 196, 48, 0.1);
+            transform: translateY(-4px);
         }
         .impact-item .number {
             font-family: 'Playfair Display', serif;
@@ -808,14 +978,14 @@
         }
         .impact-item .label {
             font-size: 0.8rem;
-            opacity: 0.6;
+            opacity: 0.5;
             margin-top: 6px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         /* ============================================
-                   TESTIMONIALS
+                   TESTIMONIALS (Animated)
                    ============================================ */
         .testimonials-section {
             background: var(--white);
@@ -823,7 +993,7 @@
         .testimonials-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 24px;
+            gap: 30px;
             margin-top: 48px;
         }
         @media (min-width: 640px) {
@@ -840,18 +1010,33 @@
         .testimonial-card {
             background: var(--off-white);
             border-radius: var(--radius-lg);
-            padding: 32px 28px;
+            padding: 36px 32px;
             border: 1px solid rgba(13, 27, 62, 0.04);
             transition: var(--transition);
+            position: relative;
+        }
+        .testimonial-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gold-gradient);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .testimonial-card:hover::before {
+            opacity: 1;
         }
         .testimonial-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(13, 27, 62, 0.06);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(13, 27, 62, 0.06);
         }
-        .testimonial-card .quote {
-            font-size: 2rem;
+        .testimonial-card .quote-icon {
+            font-size: 2.4rem;
             color: var(--gold);
-            opacity: 0.3;
+            opacity: 0.2;
             line-height: 1;
             margin-bottom: 8px;
         }
@@ -862,14 +1047,14 @@
             font-style: italic;
         }
         .testimonial-card .author {
-            margin-top: 16px;
+            margin-top: 18px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
         .testimonial-card .author .avatar {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             background: var(--gold-gradient);
             display: flex;
@@ -878,6 +1063,7 @@
             font-weight: 700;
             color: var(--navy);
             font-size: 1.1rem;
+            flex-shrink: 0;
         }
         .testimonial-card .author .name {
             font-weight: 700;
@@ -890,29 +1076,55 @@
         }
 
         /* ============================================
-                   CTA BANNER
+                   CTA BANNER (Parallax)
                    ============================================ */
         .cta-banner {
-            padding: 60px 0;
+            padding: 80px 0;
             background: linear-gradient(135deg, var(--navy), var(--navy-light));
             border-top: 3px solid var(--gold);
             border-bottom: 3px solid var(--gold);
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-banner::before {
+            content: '⭐⭐';
+            position: absolute;
+            font-size: 200px;
+            opacity: 0.03;
+            left: -60px;
+            top: -80px;
+            pointer-events: none;
+        }
+        .cta-banner::after {
+            content: '⭐⭐';
+            position: absolute;
+            font-size: 150px;
+            opacity: 0.03;
+            right: -40px;
+            bottom: -60px;
+            pointer-events: none;
         }
         .cta-banner h2 {
             font-family: 'Playfair Display', serif;
             color: var(--white);
             font-size: clamp(1.8rem, 3vw, 2.8rem);
             margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
         }
         .cta-banner p {
-            color: rgba(255, 255, 255, 0.65);
+            color: rgba(255, 255, 255, 0.6);
             margin-bottom: 28px;
             font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
         }
         .cta-banner .btn-primary {
             font-size: 1.1rem;
             padding: 16px 48px;
+            position: relative;
+            z-index: 1;
         }
 
         /* ============================================
@@ -920,7 +1132,7 @@
                    ============================================ */
         .footer {
             background: #0a1528;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.5);
             padding: 60px 0 20px;
         }
         .footer-grid {
@@ -938,6 +1150,7 @@
                 grid-template-columns: 2fr 1fr 1fr 1fr;
             }
         }
+
         .footer-brand .stars {
             color: var(--gold);
             font-size: 1.4rem;
@@ -959,7 +1172,7 @@
             margin-top: 2px;
         }
         .footer-brand p {
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.4);
             font-size: 0.9rem;
             line-height: 1.7;
             margin-top: 12px;
@@ -981,7 +1194,7 @@
         }
         .footer ul a {
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.4);
             transition: var(--transition);
         }
         .footer ul a:hover {
@@ -993,20 +1206,22 @@
             margin-top: 12px;
         }
         .footer-social a {
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.03);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.3);
             transition: var(--transition);
             font-size: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
         .footer-social a:hover {
             color: var(--gold);
-            background: rgba(244, 196, 48, 0.1);
+            background: rgba(244, 196, 48, 0.08);
+            border-color: rgba(244, 196, 48, 0.15);
             transform: translateY(-3px);
         }
 
@@ -1020,7 +1235,7 @@
             gap: 12px;
             text-align: center;
             font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.2);
         }
         @media (min-width: 640px) {
             .footer-bottom {
@@ -1039,8 +1254,8 @@
             position: fixed;
             bottom: 24px;
             right: 24px;
-            width: 48px;
-            height: 48px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background: var(--gold-gradient);
             color: var(--navy);
@@ -1052,13 +1267,13 @@
             z-index: 900;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(20px);
+            transform: translateY(20px) scale(0.9);
             transition: var(--transition);
         }
         .back-top.visible {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
         .back-top:hover {
             transform: translateY(-4px) scale(1.05);
@@ -1069,7 +1284,7 @@
                    ============================================ */
         @media (max-width: 480px) {
             .section-padding {
-                padding: 56px 0;
+                padding: 60px 0;
             }
             .hero {
                 min-height: 90vh;
@@ -1099,6 +1314,19 @@
             .impact-grid {
                 gap: 20px;
             }
+            .scroll-indicator {
+                display: none;
+            }
+            .navbar-brand .brand-main {
+                font-size: 0.95rem;
+            }
+            .navbar-brand .brand-sub {
+                font-size: 0.5rem;
+                letter-spacing: 2px;
+            }
+            .navbar-brand .stars {
+                font-size: 0.9rem;
+            }
         }
 
         @media (max-width: 768px) {
@@ -1115,10 +1343,13 @@
 
 <body>
 
-    <!-- ===== LOADER ===== -->
+    <!-- ===== PRE-LOADER ===== -->
     <div class="loader" id="loader">
         <div class="loader-ring"></div>
         <div class="loader-text">DJML</div>
+        <div class="loader-progress">
+            <div class="loader-progress-bar" id="loaderProgress"></div>
+        </div>
     </div>
 
     <!-- ===== OVERLAY ===== -->
@@ -1130,12 +1361,12 @@
             <i class="fas fa-times"></i>
         </button>
         <ul>
-            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html" class="active">Home</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="programs.html">Programs</a></li>
             <li><a href="impact.html">Impact</a></li>
             <li><a href="testimonials.html">Testimonials</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="donate.html" style="color:var(--gold);">Donate</a></li>
         </ul>
         <div class="social-row">
             <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -1148,7 +1379,7 @@
     <!-- ===== NAVBAR ===== -->
     <nav class="navbar" id="navbar">
         <div class="container">
-            <a href="#home" class="navbar-brand">
+            <a href="index.html" class="navbar-brand">
                 <span class="stars">⭐⭐</span>
                 <div class="brand-text">
                     <span class="brand-main">DENG JOHNSON MALUAL LEEK</span>
@@ -1165,30 +1396,31 @@
                 <li><a href="donate.html" class="nav-cta">Donate</a></li>
             </ul>
 
-            <div class="nav-actions">
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </nav>
 
-    <!-- ===== HERO WITH ROTATING BANNERS ===== -->
+    <!-- ===== HERO ===== -->
     <section class="hero" id="home">
-        <!-- Rotating Background Banners -->
         <div class="hero-slideshow" id="heroSlideshow">
             <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1533105079780-92b9be482077?w=1600&q=80');"></div>
             <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1600&q=80');"></div>
             <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=1600&q=80');"></div>
         </div>
 
-        <!-- Slide Dots -->
         <div class="slide-dots" id="slideDots">
             <span class="dot active" data-index="0"></span>
             <span class="dot" data-index="1"></span>
             <span class="dot" data-index="2"></span>
+        </div>
+
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="mouse"></div>
         </div>
 
         <div class="container">
@@ -1207,10 +1439,10 @@
                     healthcare, and community empowerment.
                 </p>
                 <div class="hero-buttons">
-                    <a href="#donate" class="btn btn-primary">
+                    <a href="donate.html" class="btn btn-primary">
                         <i class="fas fa-hand-holding-heart"></i> Donate Now
                     </a>
-                    <a href="#programs" class="btn btn-outline">
+                    <a href="programs.html" class="btn btn-outline">
                         <i class="fas fa-book-open"></i> Our Programs
                     </a>
                 </div>
@@ -1234,22 +1466,22 @@
     </section>
 
     <!-- ===== MISSION STRIP ===== -->
-    <section class="mission-strip" id="about">
+    <section class="mission-strip" data-aos="fade-up">
         <div class="container">
             <div class="mission-text">
                 <h2>Transforming Lives Across <span class="highlight">South Sudan</span></h2>
                 <p>The Deng Johnson Malual Leek Foundation is a dedicated non-profit philanthropic organization committed to fostering sustainable development and social progress in South Sudan and beyond.</p>
             </div>
             <div class="mission-stats">
-                <div class="stat-item">
+                <div class="stat-item" data-aos="zoom-in" data-aos-delay="100">
                     <span class="number" data-count="5000">0</span>
                     <span class="label">Lives Impacted</span>
                 </div>
-                <div class="stat-item">
+                <div class="stat-item" data-aos="zoom-in" data-aos-delay="200">
                     <span class="number" data-count="12">0</span>
                     <span class="label">Communities</span>
                 </div>
-                <div class="stat-item">
+                <div class="stat-item" data-aos="zoom-in" data-aos-delay="300">
                     <span class="number" data-count="50">0</span>
                     <span class="label">Volunteers</span>
                 </div>
@@ -1260,66 +1492,79 @@
     <!-- ===== PROGRAMS ===== -->
     <section class="programs-section section-padding" id="programs">
         <div class="container">
-            <span class="section-label">What We Do</span>
-            <h2 class="section-title">
+            <span class="section-label" data-aos="fade-up">What We Do</span>
+            <h2 class="section-title" data-aos="fade-up" data-aos-delay="100">
                 Our <span class="gold-text">Programs</span>
             </h2>
-            <p class="section-sub">
+            <p class="section-sub" data-aos="fade-up" data-aos-delay="200">
                 We focus on three core areas to build a stronger, more resilient South Sudan.
             </p>
 
             <div class="programs-grid">
-                <div class="program-card">
-                    <span class="icon">📚</span>
+                <div class="program-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="icon-wrapper">📚</div>
                     <h3>Education</h3>
                     <p>Providing access to quality education, school supplies, and scholarships for underprivileged children and youth in South Sudan.</p>
-                    <a href="#" class="learn-more">Learn More <i class="fas fa-arrow-right"></i></a>
+                    <a href="programs.html#education" class="learn-more">Learn More <i class="fas fa-arrow-right"></i></a>
                 </div>
-                <div class="program-card">
-                    <span class="icon">🏥</span>
+                <div class="program-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-wrapper">🏥</div>
                     <h3>Health &amp; Wellness</h3>
                     <p>Delivering essential healthcare services, maternal care, and health education to remote and underserved communities.</p>
-                    <a href="#" class="learn-more">Learn More <i class="fas fa-arrow-right"></i></a>
+                    <a href="programs.html#health" class="learn-more">Learn More <i class="fas fa-arrow-right"></i></a>
                 </div>
-                <div class="program-card">
-                    <span class="icon">🤝</span>
+                <div class="program-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="icon-wrapper">🤝</div>
                     <h3>Community Development</h3>
                     <p>Empowering local communities through peace-building initiatives, economic empowerment, and infrastructure support.</p>
-                    <a href="#" class="learn-more">Learn More <i class="fas fa-arrow-right"></i></a>
+                    <a href="programs.html#community" class="learn-more">Learn More <i class="fas fa-arrow-right"></i></a>
                 </div>
+            </div>
+
+            <div style="text-align:center; margin-top:48px;" data-aos="fade-up">
+                <a href="programs.html" class="btn btn-navy">
+                    View All Programs <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </section>
 
     <!-- ===== IMPACT ===== -->
     <section class="impact-section section-padding" id="impact">
+        <div class="bg-pattern"></div>
         <span class="bg-stars">⭐⭐</span>
         <div class="container">
-            <span class="section-label" style="border-color:rgba(244,196,48,0.3);">Our Impact</span>
-            <h2 class="section-title">
+            <span class="section-label" data-aos="fade-up" style="border-color:rgba(244,196,48,0.3);">Our Impact</span>
+            <h2 class="section-title" data-aos="fade-up" data-aos-delay="100">
                 Making a <span class="gold-text">Difference</span>
             </h2>
-            <p class="section-sub">
+            <p class="section-sub" data-aos="fade-up" data-aos-delay="200">
                 Every donation and every effort brings us closer to a brighter future for South Sudan.
             </p>
 
             <div class="impact-grid">
-                <div class="impact-item">
+                <div class="impact-item" data-aos="flip-up" data-aos-delay="100">
                     <span class="number" data-count="5000">0</span>
                     <span class="label">Children Educated</span>
                 </div>
-                <div class="impact-item">
+                <div class="impact-item" data-aos="flip-up" data-aos-delay="200">
                     <span class="number" data-count="25">0</span>
                     <span class="label">Schools Supported</span>
                 </div>
-                <div class="impact-item">
+                <div class="impact-item" data-aos="flip-up" data-aos-delay="300">
                     <span class="number" data-count="10000">0</span>
                     <span class="label">Medical Treatments</span>
                 </div>
-                <div class="impact-item">
+                <div class="impact-item" data-aos="flip-up" data-aos-delay="400">
                     <span class="number" data-count="15">0</span>
                     <span class="label">Peace Workshops</span>
                 </div>
+            </div>
+
+            <div style="text-align:center; margin-top:48px;" data-aos="fade-up">
+                <a href="impact.html" class="btn btn-primary">
+                    See Full Impact Report <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </section>
@@ -1327,17 +1572,17 @@
     <!-- ===== TESTIMONIALS ===== -->
     <section class="testimonials-section section-padding" id="testimonials">
         <div class="container">
-            <span class="section-label">Testimonials</span>
-            <h2 class="section-title">
+            <span class="section-label" data-aos="fade-up">Testimonials</span>
+            <h2 class="section-title" data-aos="fade-up" data-aos-delay="100">
                 Voices of <span class="gold-text">Impact</span>
             </h2>
-            <p class="section-sub">
+            <p class="section-sub" data-aos="fade-up" data-aos-delay="200">
                 Hear from the communities and partners whose lives have been transformed.
             </p>
 
             <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="quote">"</div>
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="quote-icon">"</div>
                     <p>The foundation gave my children access to education they never would have had. Today, they dream of becoming doctors and teachers.</p>
                     <div class="author">
                         <div class="avatar">AK</div>
@@ -1347,8 +1592,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="testimonial-card">
-                    <div class="quote">"</div>
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="quote-icon">"</div>
                     <p>The health programs have saved countless lives in our village. We now have access to clean water and maternal care that we never had before.</p>
                     <div class="author">
                         <div class="avatar">JM</div>
@@ -1358,8 +1603,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="testimonial-card">
-                    <div class="quote">"</div>
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="quote-icon">"</div>
                     <p>I am proud to partner with DJML Foundation. Their commitment to peace-building and community empowerment is truly inspiring.</p>
                     <div class="author">
                         <div class="avatar">SN</div>
@@ -1370,11 +1615,17 @@
                     </div>
                 </div>
             </div>
+
+            <div style="text-align:center; margin-top:48px;" data-aos="fade-up">
+                <a href="testimonials.html" class="btn btn-navy">
+                    Read More Stories <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
         </div>
     </section>
 
     <!-- ===== CTA BANNER ===== -->
-    <section class="cta-banner" id="donate">
+    <section class="cta-banner" data-aos="zoom-in" data-aos-duration="800">
         <div class="container">
             <h2>Ready to Make a <span style="color: var(--gold);">Difference</span>?</h2>
             <p>Your support can change lives. Join us in building a better future for South Sudan.</p>
@@ -1404,29 +1655,31 @@
                 <div>
                     <h5>Quick Links</h5>
                     <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#programs">Programs</a></li>
-                        <li><a href="#impact">Impact</a></li>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="programs.html">Programs</a></li>
+                        <li><a href="impact.html">Impact</a></li>
+                        <li><a href="testimonials.html">Testimonials</a></li>
+                        <li><a href="donate.html">Donate</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h5>Programs</h5>
                     <ul>
-                        <li><a href="#">Education</a></li>
-                        <li><a href="#">Health</a></li>
-                        <li><a href="#">Community</a></li>
-                        <li><a href="#">Volunteer</a></li>
+                        <li><a href="programs.html#education">Education</a></li>
+                        <li><a href="programs.html#health">Health</a></li>
+                        <li><a href="programs.html#community">Community</a></li>
+                        <li><a href="volunteer.html">Volunteer</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h5>Contact</h5>
                     <ul>
-                        <li><a href="mailto:info@djmlfoundation.org">info@djmlfoundation.org</a></li>
-                        <li><a href="tel:+211123456789">+211 123 456 789</a></li>
-                        <li><a href="#">Juba, South Sudan</a></li>
+                        <li><a href="mailto:info@djmlfoundation.org"><i class="fas fa-envelope" style="width:20px;"></i> info@djmlfoundation.org</a></li>
+                        <li><a href="tel:+211123456789"><i class="fas fa-phone" style="width:20px;"></i> +211 123 456 789</a></li>
+                        <li><a href="#"><i class="fas fa-map-marker-alt" style="width:20px;"></i> Juba, South Sudan</a></li>
                     </ul>
                 </div>
             </div>
@@ -1443,17 +1696,38 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
+    <!-- ===== AOS ===== -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <!-- ============================================
                JAVASCRIPT
                ============================================ -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            // ===== LOADER =====
+            // ===== PRE-LOADER =====
             const loader = document.getElementById('loader');
-            setTimeout(function() {
-                loader.classList.add('hidden');
-            }, 800);
+            const progressBar = document.getElementById('loaderProgress');
+            let progress = 0;
+
+            const loadInterval = setInterval(function() {
+                progress += Math.random() * 15;
+                if (progress > 100) progress = 100;
+                progressBar.style.width = progress + '%';
+                if (progress === 100) {
+                    clearInterval(loadInterval);
+                    setTimeout(function() {
+                        loader.classList.add('hidden');
+                    }, 400);
+                }
+            }, 200);
+
+            // ===== AOS INIT =====
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 80
+            });
 
             // ===== HERO SLIDESHOW =====
             (function() {
@@ -1531,11 +1805,9 @@
 
             window.addEventListener('scroll', function() {
                 if (window.pageYOffset > 50) {
-                    navbar.style.background = 'rgba(13,27,62,0.98)';
-                    navbar.style.borderBottom = '2px solid rgba(244,196,48,0.2)';
+                    navbar.classList.add('scrolled');
                 } else {
-                    navbar.style.background = 'rgba(13,27,62,0.92)';
-                    navbar.style.borderBottom = '2px solid rgba(244,196,48,0.15)';
+                    navbar.classList.remove('scrolled');
                 }
             });
 
@@ -1552,40 +1824,6 @@
 
             backTop.addEventListener('click', function() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-
-            // ===== ACTIVE NAV LINK =====
-            const sections = document.querySelectorAll('section[id], .hero');
-            const navLinks = document.querySelectorAll('.nav-links a, .mobile-menu ul a');
-
-            window.addEventListener('scroll', function() {
-                let current = 'home';
-                sections.forEach(function(section) {
-                    const sectionTop = section.offsetTop - 150;
-                    if (window.pageYOffset >= sectionTop) {
-                        current = section.getAttribute('id') || 'home';
-                    }
-                });
-
-                navLinks.forEach(function(link) {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === '#' + current) {
-                        link.classList.add('active');
-                    }
-                });
-            });
-
-            // ===== SMOOTH SCROLL =====
-            document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-                anchor.addEventListener('click', function(e) {
-                    const href = this.getAttribute('href');
-                    if (href === '#') return;
-                    const target = document.querySelector(href);
-                    if (target) {
-                        e.preventDefault();
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                });
             });
 
             // ===== COUNTER ANIMATION =====
@@ -1617,6 +1855,31 @@
             counters.forEach(function(counter) {
                 counterObserver.observe(counter);
             });
+
+            // ===== ACTIVE NAV LINK =====
+            const sections = document.querySelectorAll('section[id], .hero');
+            const navLinks = document.querySelectorAll('.nav-links a, .mobile-menu ul a');
+
+            window.addEventListener('scroll', function() {
+                let current = 'home';
+                sections.forEach(function(section) {
+                    const sectionTop = section.offsetTop - 150;
+                    if (window.pageYOffset >= sectionTop) {
+                        current = section.getAttribute('id') || 'home';
+                    }
+                });
+
+                navLinks.forEach(function(link) {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            console.log('🌟 DJML Foundation — Empowering South Sudan\'s Future');
+            console.log('📄 Built with depth, animations, and full integration.');
+            console.log('💛 Donate page coming next with Stripe/PayPal integration.');
 
         });
     </script>
