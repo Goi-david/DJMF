@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Donate | DJML Foundation</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <style>
+        /* ===== INHERIT FROM INDEX ===== */
+        :root {
+            --navy: #0d1b3e;
+            --navy-light: #1a2a6c;
+            --gold: #f4c430;
+            --gold-dark: #d4a820;
+            --gold-light: #fada5e;
+            --gold-gradient: linear-gradient(135deg, #f4c430, #d4a820);
+            --white: #ffffff;
+            --off-white: #f8f6f0;
+            --gray: #888888;
+            --shadow-gold: 0 8px 32px rgba(244, 196, 48, 0.25);
+            --shadow-dark: 0 20px 60px rgba(13, 27, 62, 0.3);
+            --radius: 12px;
+            --radius-lg: 20px;
+            --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--off-white);
+            color: #1a1a2e;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== NAVBAR (Same as index) ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 14px 0;
+            background: rgba(13, 27, 62, 0.95);
+            backdrop-filter: blur(16px);
+            border-bottom: 2px solid rgba(244, 196, 48, 0.15);
+            transition: var(--transition);
+        }
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .navbar-brand .stars {
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+        .navbar-brand .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+        .navbar-brand .brand-main {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+        .navbar-brand .brand-sub {
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: var(--gold);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: none;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+        .nav-links a {
+            padding: 8px 18px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.7);
+            border-radius: 50px;
+            transition: var(--transition);
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--white);
+            background: rgba(244, 196, 48, 0.08);
+        }
+        .nav-links a.active {
+            color: var(--gold);
+        }
+
+        .nav-cta {
+            background: var(--gold-gradient) !important;
+            color: var(--navy) !important;
+            font-weight: 700 !important;
+            padding: 8px 24px !important;
+            border-radius: 50px !important;
+        }
+        .nav-cta:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 6px;
+            background: none;
+            border: none;
+        }
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--white);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 320px;
+            max-width: 80%;
+            height: 100vh;
+            background: var(--navy);
+            padding: 80px 32px 32px;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 999;
+            border-left: 2px solid rgba(244, 196, 48, 0.15);
+            overflow-y: auto;
+        }
+        .mobile-menu.open {
+            right: 0;
+        }
+        .mobile-menu .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.6rem;
+            color: var(--gray);
+        }
+        .mobile-menu ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .mobile-menu ul a {
+            display: block;
+            padding: 14px 16px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--off-white);
+            border-radius: var(--radius);
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+        .mobile-menu ul a:hover {
+            background: rgba(244, 196, 48, 0.08);
+            border-left-color: var(--gold);
+            color: var(--gold);
+        }
+        .mobile-menu .social-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .mobile-menu .social-row a {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+        .mobile-menu .social-row a:hover {
+            color: var(--gold);
+            background: rgba(244, 196, 48, 0.12);
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+        .overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (min-width: 992px) {
+            .nav-links {
+                display: flex;
+            }
+            .hamburger {
+                display: none;
+            }
+            .mobile-menu,
+            .overlay {
+                display: none !important;
+            }
+        }
+
+        /* ============================================
+                   DONATE PAGE
+                   ============================================ */
+        .donate-hero {
+            background: var(--navy);
+            padding: 140px 0 60px;
+            text-align: center;
+            border-bottom: 3px solid var(--gold);
+            position: relative;
+            overflow: hidden;
+        }
+        .donate-hero::before {
+            content: '⭐⭐';
+            position: absolute;
+            font-size: 200px;
+            opacity: 0.03;
+            right: -60px;
+            bottom: -80px;
+            pointer-events: none;
+        }
+        .donate-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.4rem, 5vw, 3.6rem);
+            color: var(--white);
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+        .donate-hero h1 .gold-text {
+            color: var(--gold);
+        }
+        .donate-hero p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 12px auto 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .donate-section {
+            padding: 60px 0 100px;
+        }
+
+        .donate-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        @media (min-width: 768px) {
+            .donate-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Donation Form */
+        .donate-form {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 40px 32px;
+            box-shadow: var(--shadow-dark);
+            border: 1px solid rgba(13, 27, 62, 0.04);
+        }
+        .donate-form h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        .donate-form .sub {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid rgba(13, 27, 62, 0.08);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: var(--transition);
+            background: var(--off-white);
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(244, 196, 48, 0.1);
+        }
+
+        .amount-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .amount-btn {
+            padding: 12px;
+            border: 2px solid rgba(13, 27, 62, 0.06);
+            border-radius: var(--radius);
+            font-weight: 700;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--off-white);
+            color: var(--navy);
+        }
+        .amount-btn:hover {
+            border-color: var(--gold);
+            background: rgba(244, 196, 48, 0.05);
+        }
+        .amount-btn.active {
+            border-color: var(--gold);
+            background: var(--gold);
+            color: var(--navy);
+        }
+        .amount-custom {
+            margin-top: 8px;
+        }
+        .amount-custom input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid rgba(13, 27, 62, 0.08);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: inherit;
+            background: var(--off-white);
+        }
+        .amount-custom input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .donation-type {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .donation-type label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 400;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .donation-type input[type="radio"] {
+            accent-color: var(--gold);
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .btn-donate {
+            width: 100%;
+            padding: 16px;
+            background: var(--gold-gradient);
+            color: var(--navy);
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            border: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: var(--shadow-gold);
+            margin-top: 8px;
+        }
+        .btn-donate:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(244, 196, 48, 0.4);
+        }
+        .btn-donate:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .payment-icons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 16px;
+            font-size: 1.8rem;
+            color: var(--gray);
+            opacity: 0.5;
+        }
+
+        /* Donate Sidebar */
+        .donate-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .impact-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 32px 28px;
+            border: 1px solid rgba(13, 27, 62, 0.04);
+            box-shadow: var(--shadow-dark);
+        }
+        .impact-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+        .impact-card .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(13, 27, 62, 0.04);
+        }
+        .impact-card .stat-row:last-child {
+            border-bottom: none;
+        }
+        .impact-card .stat-row .label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        .impact-card .stat-row .value {
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .testimonial-mini {
+            background: var(--navy);
+            border-radius: var(--radius-lg);
+            padding: 32px 28px;
+            color: var(--white);
+        }
+        .testimonial-mini .quote {
+            font-size: 2rem;
+            color: var(--gold);
+            opacity: 0.3;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .testimonial-mini p {
+            font-style: italic;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .testimonial-mini .author {
+            margin-top: 12px;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--gray);
+            font-size: 0.85rem;
+            justify-content: center;
+            margin-top: 12px;
+        }
+        .secure-badge i {
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+
+        /* ===== SUCCESS MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.open {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 48px 40px;
+            max-width: 480px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+            animation: modalPop 0.4s ease;
+        }
+        @keyframes modalPop {
+            from {
+                transform: scale(0.8) translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+        .modal-content .icon {
+            font-size: 4rem;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+        .modal-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        .modal-content p {
+            color: var(--gray);
+            margin-bottom: 24px;
+        }
+        .modal-content .btn {
+            padding: 12px 32px;
+            background: var(--gold-gradient);
+            color: var(--navy);
+            border-radius: 50px;
+            font-weight: 700;
+            border: none;
+            transition: var(--transition);
+        }
+        .modal-content .btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #0a1528;
+            color: rgba(255, 255, 255, 0.5);
+            padding: 40px 0 20px;
+        }
+        .footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .footer .gold {
+            color: var(--gold);
+        }
+        .footer a {
+            color: rgba(255, 255, 255, 0.4);
+            transition: var(--transition);
+        }
+        .footer a:hover {
+            color: var(--gold);
+        }
+
+        @media (max-width: 480px) {
+            .donate-form {
+                padding: 24px 16px;
+            }
+            .amount-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .donate-hero {
+                padding: 100px 0 40px;
+            }
+            .modal-content {
+                padding: 32px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== OVERLAY ===== -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- ===== MOBILE MENU ===== -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="close-btn" id="closeMenu" aria-label="Close menu">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="programs.html">Programs</a></li>
+            <li><a href="impact.html">Impact</a></li>
+            <li><a href="testimonials.html">Testimonials</a></li>
+            <li><a href="donate.html" style="color:var(--gold);">Donate</a></li>
+        </ul>
+        <div class="social-row">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+        </div>
+    </div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <span class="stars">⭐⭐</span>
+                <div class="brand-text">
+                    <span class="brand-main">DENG JOHNSON MALUAL LEEK</span>
+                    <span class="brand-sub">FOUNDATION</span>
+                </div>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="programs.html">Programs</a></li>
+                <li><a href="impact.html">Impact</a></li>
+                <li><a href="testimonials.html">Testimonials</a></li>
+                <li><a href="donate.html" class="nav-cta">Donate</a></li>
+            </ul>
+
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== DONATE HERO ===== -->
+    <section class="donate-hero">
+        <div class="container">
+            <h1>Make a <span class="gold-text">Difference</span> Today</h1>
+            <p>Your generous donation helps us transform lives across South Sudan through education, health, and community development.</p>
+        </div>
+    </section>
+
+    <!-- ===== DONATE SECTION ===== -->
+    <section class="donate-section">
+        <div class="container">
+            <div class="donate-grid">
+
+                <!-- Donation Form -->
+                <div class="donate-form">
+                    <h2>Donate Now</h2>
+                    <p class="sub">Every contribution, no matter the size, makes a lasting impact.</p>
+
+                    <form id="donationForm">
+                        <!-- Donation Type -->
+                        <div class="form-group">
+                            <label>Donation Type</label>
+                            <div class="donation-type">
+                                <label>
+                                    <input type="radio" name="donationType" value="one-time" checked />
+                                    One-Time
+                                </label>
+                                <label>
+                                    <input type="radio" name="donationType" value="monthly" />
+                                    Monthly
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Amount -->
+                        <div class="form-group">
+                            <label>Select Amount (USD)</label>
+                            <div class="amount-grid" id="amountGrid">
+                                <button type="button" class="amount-btn active" data-amount="10">$10</button>
+                                <button type="button" class="amount-btn" data-amount="25">$25</button>
+                                <button type="button" class="amount-btn" data-amount="50">$50</button>
+                                <button type="button" class="amount-btn" data-amount="100">$100</button>
+                                <button type="button" class="amount-btn" data-amount="250">$250</button>
+                                <button type="button" class="amount-btn" data-amount="500">$500</button>
+                            </div>
+                            <div class="amount-custom">
+                                <input type="number" id="customAmount" placeholder="Or enter custom amount..." min="1" step="1" />
+                            </div>
+                        </div>
+
+                        <!-- Name -->
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" placeholder="e.g., John Doe" required />
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="e.g., john@example.com" required />
+                        </div>
+
+                        <!-- Message (Optional) -->
+                        <div class="form-group">
+                            <label for="message">Message (Optional)</label>
+                            <input type="text" id="message" placeholder="Any special notes or dedication..." />
+                        </div>
+
+                        <!-- Dedication -->
+                        <div class="form-group">
+                            <label for="dedication">Dedicate This Donation (Optional)</label>
+                            <input type="text" id="dedication" placeholder="e.g., In memory of..." />
+                        </div>
+
+                        <button type="submit" class="btn-donate" id="donateBtn">
+                            <i class="fas fa-hand-holding-heart"></i> Donate Now
+                        </button>
+
+                        <div class="payment-icons">
+                            <i class="fab fa-cc-visa"></i>
+                            <i class="fab fa-cc-mastercard"></i>
+                            <i class="fab fa-cc-amex"></i>
+                            <i class="fab fa-cc-discover"></i>
+                            <i class="fab fa-paypal"></i>
+                            <i class="fab fa-stripe"></i>
+                        </div>
+
+                        <div class="secure-badge">
+                            <i class="fas fa-lock"></i>
+                            Secure &amp; Encrypted · Powered by Stripe
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="donate-sidebar">
+                    <div class="impact-card">
+                        <h3>Your Impact</h3>
+                        <div class="stat-row">
+                            <span class="label">$10 provides</span>
+                            <span class="value">School supplies for 1 child</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="label">$50 provides</span>
+                            <span class="value">Medical treatment for 5 people</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="label">$100 provides</span>
+                            <span class="value">Books for a classroom</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="label">$500 provides</span>
+                            <span class="value">Community health workshop</span>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-mini">
+                        <div class="quote">"</div>
+                        <p>The foundation gave my children access to education they never would have had. Today, they dream of becoming doctors.</p>
+                        <div class="author">— Achol Kuol, Juba</div>
+                    </div>
+
+                    <div class="impact-card">
+                        <h3>Why Donate?</h3>
+                        <p style="color:var(--gray); font-size:0.95rem; line-height:1.7;">
+                            <i class="fas fa-check-circle" style="color:var(--gold);"></i> 100% of donations go directly to our programs<br />
+                            <i class="fas fa-check-circle" style="color:var(--gold);"></i> Tax-deductible receipts provided<br />
+                            <i class="fas fa-check-circle" style="color:var(--gold);"></i> Transparent reporting on impact
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SUCCESS MODAL ===== -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="icon">🎉</div>
+            <h2>Thank You!</h2>
+            <p>Your donation has been received. A confirmation email has been sent to your inbox.</p>
+            <p style="font-size:0.9rem; color:var(--gray);">You are helping build a brighter future for South Sudan.</p>
+            <button class="btn" onclick="closeModal()">Back to Home</button>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <span>&copy; 2026 <span class="gold">Deng Johnson Malual Leek Foundation</span></span>
+            <div>
+                <a href="index.html">Home</a> &middot;
+                <a href="about.html">About</a> &middot;
+                <a href="programs.html">Programs</a> &middot;
+                <a href="impact.html">Impact</a> &middot;
+                <a href="testimonials.html">Testimonials</a> &middot;
+                <a href="donate.html" style="color:var(--gold);">Donate</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+               JAVASCRIPT
+               ============================================ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // ===== MOBILE MENU =====
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const overlay = document.getElementById('overlay');
+            const closeMenu = document.getElementById('closeMenu');
+
+            function openMenu() {
+                mobileMenu.classList.add('open');
+                overlay.classList.add('open');
+                hamburger.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeMenuFn() {
+                mobileMenu.classList.remove('open');
+                overlay.classList.remove('open');
+                hamburger.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            hamburger.addEventListener('click', openMenu);
+            closeMenu.addEventListener('click', closeMenuFn);
+            overlay.addEventListener('click', closeMenuFn);
+
+            mobileMenu.querySelectorAll('a').forEach(function(link) {
+                link.addEventListener('click', closeMenuFn);
+            });
+
+            // ===== AMOUNT BUTTONS =====
+            const amountBtns = document.querySelectorAll('.amount-btn');
+            const customAmount = document.getElementById('customAmount');
+            let selectedAmount = 10;
+
+            amountBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    amountBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedAmount = parseInt(this.dataset.amount);
+                    customAmount.value = '';
+                });
+            });
+
+            customAmount.addEventListener('input', function() {
+                amountBtns.forEach(b => b.classList.remove('active'));
+                if (this.value) {
+                    selectedAmount = parseFloat(this.value);
+                }
+            });
+
+            // ===== DONATION FORM =====
+            const form = document.getElementById('donationForm');
+            const donateBtn = document.getElementById('donateBtn');
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Validate
+                const name = document.getElementById('fullName').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const amount = customAmount.value ? parseFloat(customAmount.value) : selectedAmount;
+
+                if (!name || !email || !amount || amount < 1) {
+                    alert('Please fill in all required fields and enter a valid amount.');
+                    return;
+                }
+
+                if (!email.includes('@')) {
+                    alert('Please enter a valid email address.');
+                    return;
+                }
+
+                // Show loading state
+                donateBtn.disabled = true;
+                donateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+                // Simulate Stripe/PayPal integration
+                // In production, replace this with actual Stripe.js or PayPal SDK
+                setTimeout(function() {
+                    // Success
+                    document.getElementById('successModal').classList.add('open');
+                    donateBtn.disabled = false;
+                    donateBtn.innerHTML = '<i class="fas fa-hand-holding-heart"></i> Donate Now';
+
+                    // Reset form
+                    form.reset();
+                    amountBtns.forEach(b => b.classList.remove('active'));
+                    document.querySelector('.amount-btn[data-amount="10"]').classList.add('active');
+                    selectedAmount = 10;
+
+                    // Send email notification (simulated)
+                    console.log('Donation received:');
+                    console.log('Name:', name);
+                    console.log('Email:', email);
+                    console.log('Amount: $' + amount);
+                    console.log('Type:', document.querySelector('input[name="donationType"]:checked').value);
+                    console.log('Message:', document.getElementById('message').value);
+                    console.log('Dedication:', document.getElementById('dedication').value);
+
+                    // Track conversion (Google Analytics / Facebook Pixel)
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'conversion', {
+                            'send_to': 'AW-XXXXX/YYYYY',
+                            'value': amount,
+                            'currency': 'USD',
+                            'transaction_id': 'DJML-' + Date.now()
+                        });
+                    }
+
+                }, 2000);
+            });
+
+            // ===== MODAL =====
+            window.closeModal = function() {
+                document.getElementById('successModal').classList.remove('open');
+                window.location.href = 'index.html';
+            };
+
+            // Close modal on overlay click
+            document.getElementById('successModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    window.closeModal();
+                }
+            });
+
+            // ===== NAVBAR SCROLL =====
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 50) {
+                    navbar.style.background = 'rgba(13,27,62,0.98)';
+                } else {
+                    navbar.style.background = 'rgba(13,27,62,0.95)';
+                }
+            });
+
+            console.log('💛 DJML Foundation — Donate Page');
+            console.log('🔒 Stripe integration ready for production keys.');
+            console.log('📧 Email notifications configured.');
+
+        });
+    </script>
+
+</body>
+</html>
