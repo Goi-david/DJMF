@@ -1789,6 +1789,14 @@
 
 <body>
 
+    <!-- ===== PRE-LOADER ===== -->
+    <div class="loader" id="loader">
+        <div class="loader-ring"></div>
+        <div class="loader-text">DJML</div>
+        <div class="loader-progress">
+            <div class="loader-progress-bar" id="loaderProgress"></div>
+        </div>
+    </div>
 
     <!-- ===== OVERLAY ===== -->
     <div class="overlay" id="overlay"></div>
@@ -1845,9 +1853,10 @@
     <!-- ===== HERO ===== -->
     <section class="hero" id="home">
         <div class="hero-slideshow" id="heroSlideshow">
-            <div class="slide active" style="background-image: url('aid1.jpg');"></div>
-            <div class="slide" style="background-image: url('aaaa.jpg');"></div>
-            <div class="slide" style="background-image: url('bbbbnn.jpg');"></div>
+            <!-- Nonprofit/Community-focused images -->
+            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=1600&q=80');"></div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=1600&q=80');"></div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1588072432836-f100acb02c6d?w=1600&q=80');"></div>
         </div>
 
         <div class="slide-dots" id="slideDots">
@@ -1939,26 +1948,31 @@
             </div>
 
             <div class="partners-grid">
+                <!-- Partner 1 -->
                 <div class="partner-logo" data-aos="zoom-in" data-aos-delay="100">
                     <span class="logo-placeholder">🏛️</span>
                     <span class="logo-name">Partner Name 1</span>
                     <span class="logo-sub">Organization Type</span>
                 </div>
+                <!-- Partner 2 -->
                 <div class="partner-logo" data-aos="zoom-in" data-aos-delay="150">
                     <span class="logo-placeholder">🌍</span>
                     <span class="logo-name">Partner Name 2</span>
                     <span class="logo-sub">Organization Type</span>
                 </div>
+                <!-- Partner 3 -->
                 <div class="partner-logo" data-aos="zoom-in" data-aos-delay="200">
                     <span class="logo-placeholder">🤝</span>
                     <span class="logo-name">Partner Name 3</span>
                     <span class="logo-sub">Organization Type</span>
                 </div>
+                <!-- Partner 4 -->
                 <div class="partner-logo" data-aos="zoom-in" data-aos-delay="250">
                     <span class="logo-placeholder">💡</span>
                     <span class="logo-name">Partner Name 4</span>
                     <span class="logo-sub">Organization Type</span>
                 </div>
+                <!-- Partner 5 -->
                 <div class="partner-logo" data-aos="zoom-in" data-aos-delay="300">
                     <span class="logo-placeholder">🌟</span>
                     <span class="logo-name">Partner Name 5</span>
@@ -2032,7 +2046,7 @@
 
                     <!-- Video Element -->
                     <video id="boreholeVideo" preload="metadata" poster="https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=800&q=80">
-                        <source src="VID-20260811-WA0006.mp4" type="video/mp4" />
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
 
@@ -2616,6 +2630,7 @@
             fullscreenBtn.addEventListener('click', function() {
                 if (!document.fullscreenElement) {
                     videoContainer.requestFullscreen().catch(function() {
+                        // Fallback for browsers that don't support fullscreen on video container
                         document.documentElement.requestFullscreen();
                     });
                 } else {
