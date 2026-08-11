@@ -1853,7 +1853,6 @@
     <!-- ===== HERO ===== -->
     <section class="hero" id="home">
         <div class="hero-slideshow" id="heroSlideshow">
-            <!-- Nonprofit/Community-focused images -->
             <div class="slide active" style="background-image: url('aid1.jpg');"></div>
             <div class="slide" style="background-image: url('aaaa.jpg');"></div>
             <div class="slide" style="background-image: url('bbbbnn.jpg');"></div>
@@ -1948,31 +1947,26 @@
             </div>
 
             <div class="partners-grid">
-                <!-- Partner 1 -->
                 <div class="partner-logo" data-aos="zoom-in" data-aos-delay="100">
                     <span class="logo-placeholder">🏛️</span>
                     <span class="logo-name">Partner Name 1</span>
                     <span class="logo-sub">Organization Type</span>
                 </div>
-                <!-- Partner 2 -->
                 <div class="partner-logo" data-aos="zoom-in" data-aos-delay="150">
                     <span class="logo-placeholder">🌍</span>
                     <span class="logo-name">Partner Name 2</span>
                     <span class="logo-sub">Organization Type</span>
                 </div>
-                <!-- Partner 3 -->
                 <div class="partner-logo" data-aos="zoom-in" data-aos-delay="200">
                     <span class="logo-placeholder">🤝</span>
                     <span class="logo-name">Partner Name 3</span>
                     <span class="logo-sub">Organization Type</span>
                 </div>
-                <!-- Partner 4 -->
                 <div class="partner-logo" data-aos="zoom-in" data-aos-delay="250">
                     <span class="logo-placeholder">💡</span>
                     <span class="logo-name">Partner Name 4</span>
                     <span class="logo-sub">Organization Type</span>
                 </div>
-                <!-- Partner 5 -->
                 <div class="partner-logo" data-aos="zoom-in" data-aos-delay="300">
                     <span class="logo-placeholder">🌟</span>
                     <span class="logo-name">Partner Name 5</span>
@@ -2039,57 +2033,60 @@
                     </a>
                 </div>
 
-               <!-- Video Container (Right) — Enhanced Player -->
-<div class="video-container" data-aos="fade-left">
-    <!-- Preview Thumbnail -->
-    <div class="video-preview" id="videoPreview" style="background-image: url('https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=800&q=80');"></div>
+                <!-- Video Container (Right) — Enhanced Player -->
+                <div class="video-container" data-aos="fade-left">
+                    <!-- Preview Thumbnail -->
+                    <div class="video-preview" id="videoPreview" style="background-image: url('https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=800&q=80');"></div>
 
-    <!-- Video Element -->
-    <video id="boreholeVideo" preload="metadata" poster="https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=800&q=80">
-        <source src="borehole-inspection.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-    </video>
+                    <!-- Video Element -->
+                    <video id="boreholeVideo" preload="metadata" poster="https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=800&q=80">
+                        <source src="VID-20260811-WA0006.mp4" type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
 
-    <!-- Play Overlay -->
-    <div class="play-overlay" id="videoOverlay">
-        <div class="play-btn">
-            <i class="fas fa-play"></i>
-        </div>
-    </div>
+                    <!-- Play Overlay -->
+                    <div class="play-overlay" id="videoOverlay">
+                        <div class="play-btn">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
 
-    <!-- Custom Controls -->
-    <div class="video-controls" id="videoControls">
-        <div class="controls-row">
-            <!-- Play/Pause -->
-            <button class="ctrl-btn" id="playPauseBtn" aria-label="Play/Pause">
-                <i class="fas fa-play"></i>
-            </button>
+                    <!-- Custom Controls -->
+                    <div class="video-controls" id="videoControls">
+                        <div class="controls-row">
+                            <!-- Play/Pause -->
+                            <button class="ctrl-btn" id="playPauseBtn" aria-label="Play/Pause">
+                                <i class="fas fa-play"></i>
+                            </button>
 
-            <!-- Progress Bar -->
-            <div class="progress-container">
-                <div class="progress-bar" id="progressBar">
-                    <div class="progress-fill" id="progressFill"></div>
+                            <!-- Progress Bar -->
+                            <div class="progress-container">
+                                <div class="progress-bar" id="progressBar">
+                                    <div class="progress-fill" id="progressFill"></div>
+                                </div>
+                                <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
+                            </div>
+
+                            <!-- Volume -->
+                            <div class="volume-container">
+                                <button class="ctrl-btn" id="volumeBtn" aria-label="Toggle volume">
+                                    <i class="fas fa-volume-up"></i>
+                                </button>
+                                <div class="volume-slider" id="volumeSlider">
+                                    <div class="volume-fill" id="volumeFill"></div>
+                                </div>
+                            </div>
+
+                            <!-- Fullscreen -->
+                            <button class="ctrl-btn" id="fullscreenBtn" aria-label="Fullscreen">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
             </div>
-
-            <!-- Volume -->
-            <div class="volume-container">
-                <button class="ctrl-btn" id="volumeBtn" aria-label="Toggle volume">
-                    <i class="fas fa-volume-up"></i>
-                </button>
-                <div class="volume-slider" id="volumeSlider">
-                    <div class="volume-fill" id="volumeFill"></div>
-                </div>
-            </div>
-
-            <!-- Fullscreen -->
-            <button class="ctrl-btn" id="fullscreenBtn" aria-label="Fullscreen">
-                <i class="fas fa-expand"></i>
-            </button>
         </div>
-    </div>
-</div>
+    </section>
 
     <!-- ==========================================================
     PROGRAMS SECTION
@@ -2627,7 +2624,6 @@
             fullscreenBtn.addEventListener('click', function() {
                 if (!document.fullscreenElement) {
                     videoContainer.requestFullscreen().catch(function() {
-                        // Fallback for browsers that don't support fullscreen on video container
                         document.documentElement.requestFullscreen();
                     });
                 } else {
