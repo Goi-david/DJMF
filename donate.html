@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Donate | DJML Foundation</title>
 
-    <!-- Font Awesome -->
+    <!-- SEO Meta -->
+    <meta name="description" content="Support the Deng Johnson Malual Leek Foundation with a secure donation. Every contribution helps transform lives across South Sudan." />
+
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     <!-- Google Fonts -->
@@ -13,11 +16,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
 
-    <!-- Stripe.js -->
+    <!-- Stripe.js (Loaded conditionally - will initialize when ready) -->
     <script src="https://js.stripe.com/v3/"></script>
 
     <style>
-        /* ===== INHERIT FROM INDEX ===== */
+        /* ============================================
+                   ROOT VARIABLES & RESET
+                   ============================================ */
         :root {
             --navy: #0d1b3e;
             --navy-light: #1a2a6c;
@@ -29,10 +34,12 @@
             --off-white: #f8f6f0;
             --gray: #888888;
             --shadow-gold: 0 8px 32px rgba(244, 196, 48, 0.25);
-            --shadow-dark: 0 20px 60px rgba(13, 27, 62, 0.3);
+            --shadow-dark: 0 20px 60px rgba(13, 27, 62, 0.15);
             --radius: 12px;
             --radius-lg: 20px;
             --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --success: #27ae60;
+            --error: #e74c3c;
         }
 
         * {
@@ -67,7 +74,51 @@
             padding: 0 20px;
         }
 
-        /* ===== NAVBAR (Same as index) ===== */
+        /* ============================================
+                   UTILITY
+                   ============================================ */
+        .gold-text {
+            color: var(--gold);
+        }
+        .section-padding {
+            padding: 80px 0;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 34px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            justify-content: center;
+        }
+        .btn-primary {
+            background: var(--gold-gradient);
+            color: var(--navy);
+            box-shadow: var(--shadow-gold);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(244, 196, 48, 0.4);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--navy);
+            border-color: var(--navy);
+        }
+        .btn-outline:hover {
+            background: var(--navy);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        /* ============================================
+                   NAVBAR (Shared)
+                   ============================================ */
         .navbar {
             position: fixed;
             top: 0;
@@ -79,6 +130,10 @@
             backdrop-filter: blur(16px);
             border-bottom: 2px solid rgba(244, 196, 48, 0.15);
             transition: var(--transition);
+        }
+        .navbar.scrolled {
+            background: rgba(13, 27, 62, 0.98);
+            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.3);
         }
         .navbar .container {
             display: flex;
@@ -94,6 +149,7 @@
         .navbar-brand .stars {
             color: var(--gold);
             font-size: 1.2rem;
+            letter-spacing: 2px;
         }
         .navbar-brand .brand-text {
             display: flex;
@@ -105,6 +161,7 @@
             font-size: 1.2rem;
             font-weight: 700;
             color: var(--white);
+            letter-spacing: 0.5px;
         }
         .navbar-brand .brand-sub {
             font-size: 0.6rem;
@@ -127,11 +184,26 @@
             color: rgba(255, 255, 255, 0.7);
             border-radius: 50px;
             transition: var(--transition);
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: var(--transition);
+        }
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 60%;
         }
         .nav-links a:hover,
         .nav-links a.active {
             color: var(--white);
-            background: rgba(244, 196, 48, 0.08);
         }
         .nav-links a.active {
             color: var(--gold);
@@ -143,6 +215,9 @@
             font-weight: 700 !important;
             padding: 8px 24px !important;
             border-radius: 50px !important;
+        }
+        .nav-cta::after {
+            display: none !important;
         }
         .nav-cta:hover {
             transform: scale(1.05);
@@ -273,15 +348,15 @@
         }
 
         /* ============================================
-                   DONATE PAGE
+                   DONATE HERO
                    ============================================ */
         .donate-hero {
             background: var(--navy);
             padding: 140px 0 60px;
             text-align: center;
-            border-bottom: 3px solid var(--gold);
             position: relative;
             overflow: hidden;
+            border-bottom: 3px solid var(--gold);
         }
         .donate-hero::before {
             content: '⭐⭐';
@@ -311,7 +386,45 @@
             position: relative;
             z-index: 1;
         }
+        .donate-hero .breadcrumb {
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+        .donate-hero .breadcrumb a {
+            color: rgba(255, 255, 255, 0.5);
+            transition: var(--transition);
+        }
+        .donate-hero .breadcrumb a:hover {
+            color: var(--gold);
+        }
+        .donate-hero .breadcrumb .sep {
+            margin: 0 8px;
+        }
+        .donate-hero .breadcrumb .current {
+            color: var(--gold);
+        }
 
+        .test-mode-badge {
+            display: inline-block;
+            background: var(--error);
+            color: var(--white);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 16px;
+            border-radius: 50px;
+            margin-top: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ============================================
+                   DONATE SECTION
+                   ============================================ */
         .donate-section {
             padding: 60px 0 100px;
         }
@@ -359,8 +472,12 @@
             color: var(--navy);
             margin-bottom: 6px;
         }
+        .form-group label .required {
+            color: var(--error);
+        }
         .form-group input,
-        .form-group select {
+        .form-group select,
+        .form-group textarea {
             width: 100%;
             padding: 12px 16px;
             border: 2px solid rgba(13, 27, 62, 0.08);
@@ -371,11 +488,29 @@
             background: var(--off-white);
         }
         .form-group input:focus,
-        .form-group select:focus {
+        .form-group select:focus,
+        .form-group textarea:focus {
             outline: none;
             border-color: var(--gold);
             background: var(--white);
-            box-shadow: 0 0 0 4px rgba(244, 196, 48, 0.1);
+            box-shadow: 0 0 0 4px rgba(244, 196, 48, 0.08);
+        }
+        .form-group input.error,
+        .form-group select.error {
+            border-color: var(--error);
+        }
+        .form-group .error-message {
+            color: var(--error);
+            font-size: 0.8rem;
+            margin-top: 4px;
+            display: none;
+        }
+        .form-group .error-message.visible {
+            display: block;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
         }
 
         .amount-grid {
@@ -402,6 +537,7 @@
             border-color: var(--gold);
             background: var(--gold);
             color: var(--navy);
+            box-shadow: var(--shadow-gold);
         }
         .amount-custom {
             margin-top: 8px;
@@ -414,10 +550,12 @@
             font-size: 1rem;
             font-family: inherit;
             background: var(--off-white);
+            transition: var(--transition);
         }
         .amount-custom input:focus {
             outline: none;
             border-color: var(--gold);
+            background: var(--white);
         }
 
         .donation-type {
@@ -466,6 +604,21 @@
             cursor: not-allowed;
             transform: none;
         }
+        .btn-donate .spinner {
+            display: none;
+            animation: spin 0.8s linear infinite;
+        }
+        .btn-donate.loading .spinner {
+            display: inline-block;
+        }
+        .btn-donate.loading .btn-text {
+            display: none;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
         .payment-icons {
             display: flex;
@@ -476,8 +629,54 @@
             color: var(--gray);
             opacity: 0.5;
         }
+        .payment-icons .active {
+            opacity: 1;
+            color: var(--navy);
+        }
 
-        /* Donate Sidebar */
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--gray);
+            font-size: 0.85rem;
+            justify-content: center;
+            margin-top: 12px;
+        }
+        .secure-badge i {
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+
+        .payment-status {
+            display: none;
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            margin-top: 16px;
+            font-weight: 600;
+        }
+        .payment-status.success {
+            display: block;
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(39, 174, 96, 0.2);
+        }
+        .payment-status.error {
+            display: block;
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--error);
+            border: 1px solid rgba(231, 76, 60, 0.2);
+        }
+        .payment-status.loading {
+            display: block;
+            background: rgba(244, 196, 48, 0.1);
+            color: var(--gold-dark);
+            border: 1px solid rgba(244, 196, 48, 0.2);
+        }
+
+        /* ============================================
+                   SIDEBAR
+                   ============================================ */
         .donate-sidebar {
             display: flex;
             flex-direction: column;
@@ -539,21 +738,40 @@
             color: var(--gold);
         }
 
-        .secure-badge {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--gray);
-            font-size: 0.85rem;
-            justify-content: center;
-            margin-top: 12px;
+        .why-donate {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 32px 28px;
+            border: 1px solid rgba(13, 27, 62, 0.04);
+            box-shadow: var(--shadow-dark);
         }
-        .secure-badge i {
-            color: var(--gold);
+        .why-donate h3 {
+            font-family: 'Playfair Display', serif;
             font-size: 1.2rem;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+        .why-donate ul {
+            list-style: none;
+        }
+        .why-donate ul li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 0;
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .why-donate ul li i {
+            color: var(--gold);
+            margin-top: 3px;
+            flex-shrink: 0;
         }
 
-        /* ===== SUCCESS MODAL ===== */
+        /* ============================================
+                   SUCCESS MODAL
+                   ============================================ */
         .modal {
             display: none;
             position: fixed;
@@ -601,6 +819,7 @@
         .modal-content p {
             color: var(--gray);
             margin-bottom: 24px;
+            line-height: 1.7;
         }
         .modal-content .btn {
             padding: 12px 32px;
@@ -615,7 +834,9 @@
             transform: scale(1.05);
         }
 
-        /* ===== FOOTER ===== */
+        /* ============================================
+                   FOOTER
+                   ============================================ */
         .footer {
             background: #0a1528;
             color: rgba(255, 255, 255, 0.5);
@@ -639,6 +860,9 @@
             color: var(--gold);
         }
 
+        /* ============================================
+                   RESPONSIVE
+                   ============================================ */
         @media (max-width: 480px) {
             .donate-form {
                 padding: 24px 16px;
@@ -651,6 +875,9 @@
             }
             .modal-content {
                 padding: 32px 20px;
+            }
+            .donate-grid {
+                gap: 24px;
             }
         }
     </style>
@@ -713,8 +940,16 @@
     <!-- ===== DONATE HERO ===== -->
     <section class="donate-hero">
         <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span class="sep">/</span>
+                <span class="current">Donate</span>
+            </div>
             <h1>Make a <span class="gold-text">Difference</span> Today</h1>
-            <p>Your generous donation helps us transform lives across South Sudan through education, health, and community development.</p>
+            <p>Your generous donation helps us transform lives across South Sudan through education, health, community development, and clean water initiatives.</p>
+            <div class="test-mode-badge">
+                <i class="fas fa-flask"></i> TEST MODE — No real charges
+            </div>
         </div>
     </section>
 
@@ -728,7 +963,7 @@
                     <h2>Donate Now</h2>
                     <p class="sub">Every contribution, no matter the size, makes a lasting impact.</p>
 
-                    <form id="donationForm">
+                    <form id="donationForm" novalidate>
                         <!-- Donation Type -->
                         <div class="form-group">
                             <label>Donation Type</label>
@@ -746,7 +981,7 @@
 
                         <!-- Amount -->
                         <div class="form-group">
-                            <label>Select Amount (USD)</label>
+                            <label>Select Amount (USD) <span class="required">*</span></label>
                             <div class="amount-grid" id="amountGrid">
                                 <button type="button" class="amount-btn active" data-amount="10">$10</button>
                                 <button type="button" class="amount-btn" data-amount="25">$25</button>
@@ -758,48 +993,62 @@
                             <div class="amount-custom">
                                 <input type="number" id="customAmount" placeholder="Or enter custom amount..." min="1" step="1" />
                             </div>
+                            <div class="error-message" id="amountError">Please select or enter a valid amount.</div>
                         </div>
 
-                        <!-- Name -->
+                        <!-- Full Name -->
                         <div class="form-group">
-                            <label for="fullName">Full Name</label>
+                            <label for="fullName">Full Name <span class="required">*</span></label>
                             <input type="text" id="fullName" placeholder="e.g., John Doe" required />
+                            <div class="error-message" id="nameError">Please enter your full name.</div>
                         </div>
 
                         <!-- Email -->
                         <div class="form-group">
-                            <label for="email">Email Address</label>
+                            <label for="email">Email Address <span class="required">*</span></label>
                             <input type="email" id="email" placeholder="e.g., john@example.com" required />
+                            <div class="error-message" id="emailError">Please enter a valid email address.</div>
+                        </div>
+
+                        <!-- Phone (Optional) -->
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" placeholder="e.g., +211 123 456 789" />
                         </div>
 
                         <!-- Message (Optional) -->
                         <div class="form-group">
                             <label for="message">Message (Optional)</label>
-                            <input type="text" id="message" placeholder="Any special notes or dedication..." />
+                            <textarea id="message" placeholder="Any special notes or dedication..." rows="2"></textarea>
                         </div>
 
-                        <!-- Dedication -->
+                        <!-- Dedication (Optional) -->
                         <div class="form-group">
                             <label for="dedication">Dedicate This Donation (Optional)</label>
                             <input type="text" id="dedication" placeholder="e.g., In memory of..." />
                         </div>
 
+                        <!-- Payment Status -->
+                        <div class="payment-status" id="paymentStatus"></div>
+
+                        <!-- Donate Button -->
                         <button type="submit" class="btn-donate" id="donateBtn">
-                            <i class="fas fa-hand-holding-heart"></i> Donate Now
+                            <span class="btn-text"><i class="fas fa-hand-holding-heart"></i> Donate Now</span>
+                            <span class="spinner"><i class="fas fa-spinner"></i></span>
                         </button>
 
                         <div class="payment-icons">
-                            <i class="fab fa-cc-visa"></i>
-                            <i class="fab fa-cc-mastercard"></i>
-                            <i class="fab fa-cc-amex"></i>
-                            <i class="fab fa-cc-discover"></i>
-                            <i class="fab fa-paypal"></i>
-                            <i class="fab fa-stripe"></i>
+                            <i class="fab fa-cc-visa active"></i>
+                            <i class="fab fa-cc-mastercard active"></i>
+                            <i class="fab fa-cc-amex active"></i>
+                            <i class="fab fa-cc-discover active"></i>
+                            <i class="fab fa-paypal active"></i>
+                            <i class="fab fa-stripe active"></i>
                         </div>
 
                         <div class="secure-badge">
                             <i class="fas fa-lock"></i>
-                            Secure &amp; Encrypted · Powered by Stripe
+                            Secure &amp; Encrypted · Powered by Stripe &amp; PayPal
                         </div>
                     </form>
                 </div>
@@ -811,6 +1060,10 @@
                         <div class="stat-row">
                             <span class="label">$10 provides</span>
                             <span class="value">School supplies for 1 child</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="label">$25 provides</span>
+                            <span class="value">Clean water for a family</span>
                         </div>
                         <div class="stat-row">
                             <span class="label">$50 provides</span>
@@ -832,13 +1085,14 @@
                         <div class="author">— Achol Kuol, Juba</div>
                     </div>
 
-                    <div class="impact-card">
+                    <div class="why-donate">
                         <h3>Why Donate?</h3>
-                        <p style="color:var(--gray); font-size:0.95rem; line-height:1.7;">
-                            <i class="fas fa-check-circle" style="color:var(--gold);"></i> 100% of donations go directly to our programs<br />
-                            <i class="fas fa-check-circle" style="color:var(--gold);"></i> Tax-deductible receipts provided<br />
-                            <i class="fas fa-check-circle" style="color:var(--gold);"></i> Transparent reporting on impact
-                        </p>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 100% of donations go directly to our programs</li>
+                            <li><i class="fas fa-check-circle"></i> Tax-deductible receipts provided</li>
+                            <li><i class="fas fa-check-circle"></i> Transparent reporting on impact</li>
+                            <li><i class="fas fa-check-circle"></i> Choose where your donation goes</li>
+                        </ul>
                     </div>
                 </div>
 
@@ -857,7 +1111,9 @@
         </div>
     </div>
 
-    <!-- ===== FOOTER ===== -->
+    <!-- ==========================================================
+    FOOTER
+    ========================================================== -->
     <footer class="footer">
         <div class="container">
             <span>&copy; 2026 <span class="gold">Deng Johnson Malual Leek Foundation</span></span>
@@ -872,13 +1128,479 @@
         </div>
     </footer>
 
-    <!-- ============================================
-               JAVASCRIPT
-               ============================================ -->
+    <!-- ==========================================================
+    JAVASCRIPT — Full Payment Foundation
+    ========================================================== -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            // ===== MOBILE MENU =====
+            // ==========================================================
+            // 1. CONFIGURATION
+            // ==========================================================
+
+            // --- STRIPE CONFIGURATION ---
+            // Replace with your actual publishable key when ready
+            // For test mode, use: pk_test_XXXXXXXXXXXXXXXXXXXXXXXX
+            // For live mode, use:  pk_live_XXXXXXXXXXXXXXXXXXXXXXXX
+            const STRIPE_PUBLISHABLE_KEY = 'pk_test_XXXXXXXXXXXXXXXXXXXXXXXX';
+
+            // --- PAYPAL CONFIGURATION ---
+            // Replace with your actual client ID when ready
+            // For test mode, use: AYxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            // For live mode, use:  AYxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            const PAYPAL_CLIENT_ID = 'AYxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+
+            // --- SERVER ENDPOINTS ---
+            // Replace with your actual server URLs when ready
+            const API_BASE_URL = 'https://your-api-server.com/api';
+            const ENDPOINTS = {
+                createStripePayment: API_BASE_URL + '/create-stripe-payment',
+                createPayPalPayment: API_BASE_URL + '/create-paypal-payment',
+                verifyPayPalPayment: API_BASE_URL + '/verify-paypal-payment',
+                sendReceipt: API_BASE_URL + '/send-receipt'
+            };
+
+            // --- PAYMENT FLAGS ---
+            let isStripeReady = false;
+            let isPayPalReady = false;
+            let stripeInstance = null;
+
+            // ==========================================================
+            // 2. DOM REFERENCES
+            // ==========================================================
+
+            const form = document.getElementById('donationForm');
+            const donateBtn = document.getElementById('donateBtn');
+            const paymentStatus = document.getElementById('paymentStatus');
+            const amountBtns = document.querySelectorAll('.amount-btn');
+            const customAmount = document.getElementById('customAmount');
+            const fullName = document.getElementById('fullName');
+            const email = document.getElementById('email');
+            const successModal = document.getElementById('successModal');
+
+            let selectedAmount = 10;
+
+            // ==========================================================
+            // 3. AMOUNT SELECTION
+            // ==========================================================
+
+            amountBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    amountBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedAmount = parseInt(this.dataset.amount);
+                    customAmount.value = '';
+                    clearErrors();
+                });
+            });
+
+            customAmount.addEventListener('input', function() {
+                amountBtns.forEach(b => b.classList.remove('active'));
+                if (this.value) {
+                    selectedAmount = parseFloat(this.value);
+                }
+                clearErrors();
+            });
+
+            // ==========================================================
+            // 4. VALIDATION
+            // ==========================================================
+
+            function clearErrors() {
+                document.querySelectorAll('.error-message').forEach(el => el.classList.remove('visible'));
+                document.querySelectorAll('.form-group input, .form-group select').forEach(el => el.classList.remove(
+                'error'));
+                paymentStatus.className = 'payment-status';
+                paymentStatus.textContent = '';
+            }
+
+            function showError(fieldId, errorId) {
+                document.getElementById(fieldId).classList.add('error');
+                document.getElementById(errorId).classList.add('visible');
+            }
+
+            function validateForm() {
+                clearErrors();
+                let isValid = true;
+
+                // Validate amount
+                if (!selectedAmount || selectedAmount < 1) {
+                    showError('customAmount', 'amountError');
+                    isValid = false;
+                }
+
+                // Validate name
+                if (!fullName.value.trim() || fullName.value.trim().length < 2) {
+                    showError('fullName', 'nameError');
+                    isValid = false;
+                }
+
+                // Validate email
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!email.value.trim() || !emailRegex.test(email.value.trim())) {
+                    showError('email', 'emailError');
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            // Real-time validation on blur
+            fullName.addEventListener('blur', function() {
+                if (this.value.trim().length < 2) {
+                    this.classList.add('error');
+                    document.getElementById('nameError').classList.add('visible');
+                } else {
+                    this.classList.remove('error');
+                    document.getElementById('nameError').classList.remove('visible');
+                }
+            });
+
+            email.addEventListener('blur', function() {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(this.value.trim())) {
+                    this.classList.add('error');
+                    document.getElementById('emailError').classList.add('visible');
+                } else {
+                    this.classList.remove('error');
+                    document.getElementById('emailError').classList.remove('visible');
+                }
+            });
+
+            // ==========================================================
+            // 5. PAYMENT STATUS DISPLAY
+            // ==========================================================
+
+            function setPaymentStatus(message, type) {
+                paymentStatus.className = 'payment-status ' + type;
+                paymentStatus.textContent = message;
+                paymentStatus.style.display = 'block';
+            }
+
+            function hidePaymentStatus() {
+                paymentStatus.className = 'payment-status';
+                paymentStatus.textContent = '';
+                paymentStatus.style.display = 'none';
+            }
+
+            // ==========================================================
+            // 6. STRIPE INTEGRATION (Foundation)
+            // ==========================================================
+
+            function initializeStripe() {
+                try {
+                    if (typeof Stripe !== 'undefined' && STRIPE_PUBLISHABLE_KEY) {
+                        stripeInstance = Stripe(STRIPE_PUBLISHABLE_KEY);
+                        isStripeReady = true;
+                        console.log('✅ Stripe initialized successfully (Test Mode)');
+                    } else {
+                        console.warn('⚠️ Stripe not loaded. Check publishable key.');
+                    }
+                } catch (error) {
+                    console.error('❌ Stripe initialization failed:', error);
+                }
+            }
+
+            async function processStripePayment(donationData) {
+                if (!isStripeReady) {
+                    throw new Error('Stripe is not initialized. Please check your configuration.');
+                }
+
+                console.log('💳 Processing Stripe payment:', donationData);
+
+                // --- STEP 1: Create a PaymentIntent on your server ---
+                // In production, this calls your server endpoint:
+                /*
+                const response = await fetch(ENDPOINTS.createStripePayment, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        amount: donationData.amount,
+                        currency: 'usd',
+                        donorName: donationData.name,
+                        donorEmail: donationData.email,
+                        donationType: donationData.type
+                    })
+                });
+                const { clientSecret, paymentIntentId } = await response.json();
+                */
+
+                // --- STEP 2: Confirm the payment on the client ---
+                // In production, this confirms the payment:
+                /*
+                const { error, paymentIntent } = await stripeInstance.confirmPayment({
+                    elements: elements, // Your Stripe Elements instance
+                    confirmParams: {
+                        return_url: 'https://yourdomain.com/donate-success.html',
+                        payment_method_data: {
+                            billing_details: {
+                                name: donationData.name,
+                                email: donationData.email
+                            }
+                        }
+                    }
+                });
+
+                if (error) {
+                    throw new Error(error.message);
+                }
+
+                return { success: true, paymentIntentId };
+                */
+
+                // --- MOCK RESPONSE FOR TESTING ---
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve({
+                            success: true,
+                            paymentIntentId: 'pi_mock_' + Date.now(),
+                            message: 'Stripe payment successful (mock)'
+                        });
+                    }, 1500);
+                });
+            }
+
+            // ==========================================================
+            // 7. PAYPAL INTEGRATION (Foundation)
+            // ==========================================================
+
+            function initializePayPal() {
+                // In production, load PayPal SDK:
+                /*
+                const script = document.createElement('script');
+                script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD&intent=capture`;
+                script.async = true;
+                script.onload = function() {
+                    isPayPalReady = true;
+                    console.log('✅ PayPal initialized successfully');
+                    renderPayPalButton();
+                };
+                document.body.appendChild(script);
+                */
+
+                // --- MOCK FOR TESTING ---
+                console.log('💳 PayPal SDK ready (mock mode)');
+                isPayPalReady = true;
+            }
+
+            function renderPayPalButton() {
+                // In production, render the PayPal button:
+                /*
+                paypal.Buttons({
+                    createOrder: function(data, actions) {
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: selectedAmount.toFixed(2)
+                                },
+                                description: 'Donation to DJML Foundation'
+                            }]
+                        });
+                    },
+                    onApprove: function(data, actions) {
+                        return actions.order.capture().then(function(details) {
+                            console.log('PayPal payment completed:', details);
+                            handlePaymentSuccess('paypal', details);
+                        });
+                    },
+                    onError: function(err) {
+                        console.error('PayPal error:', err);
+                        handlePaymentError('PayPal payment failed. Please try again.');
+                    }
+                }).render('#paypal-button-container');
+                */
+                console.log('💳 PayPal button would render here');
+            }
+
+            async function processPayPalPayment(donationData) {
+                if (!isPayPalReady) {
+                    throw new Error('PayPal is not initialized. Please check your configuration.');
+                }
+
+                console.log('💳 Processing PayPal payment:', donationData);
+
+                // --- MOCK RESPONSE FOR TESTING ---
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve({
+                            success: true,
+                            transactionId: 'PAYPAL_MOCK_' + Date.now(),
+                            message: 'PayPal payment successful (mock)'
+                        });
+                    }, 1500);
+                });
+            }
+
+            // ==========================================================
+            // 8. FORM SUBMISSION HANDLER
+            // ==========================================================
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Validate form
+                if (!validateForm()) {
+                    setPaymentStatus('Please fix the errors above and try again.', 'error');
+                    return;
+                }
+
+                // Get donation data
+                const donationData = {
+                    amount: selectedAmount,
+                    type: document.querySelector('input[name="donationType"]:checked').value,
+                    name: fullName.value.trim(),
+                    email: email.value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    message: document.getElementById('message').value.trim(),
+                    dedication: document.getElementById('dedication').value.trim()
+                };
+
+                // Start loading state
+                donateBtn.disabled = true;
+                donateBtn.classList.add('loading');
+                setPaymentStatus('Processing your donation...', 'loading');
+
+                // Choose payment processor (default to Stripe for now)
+                // In production, you could let users choose between Stripe and PayPal
+                const paymentMethod = 'stripe'; // or 'paypal'
+
+                // Process payment
+                processPayment(donationData, paymentMethod);
+            });
+
+            // ==========================================================
+            // 9. PAYMENT PROCESSING
+            // ==========================================================
+
+            async function processPayment(donationData, method) {
+                try {
+                    let result;
+
+                    if (method === 'stripe') {
+                        result = await processStripePayment(donationData);
+                    } else if (method === 'paypal') {
+                        result = await processPayPalPayment(donationData);
+                    } else {
+                        throw new Error('Invalid payment method');
+                    }
+
+                    if (result.success) {
+                        handlePaymentSuccess(method, result);
+                    } else {
+                        throw new Error(result.message || 'Payment failed');
+                    }
+
+                } catch (error) {
+                    handlePaymentError(error.message);
+                }
+            }
+
+            // ==========================================================
+            // 10. SUCCESS & ERROR HANDLING
+            // ==========================================================
+
+            function handlePaymentSuccess(method, data) {
+                console.log('✅ Payment successful:', data);
+
+                // Send receipt
+                sendReceipt({
+                    name: fullName.value.trim(),
+                    email: email.value.trim(),
+                    amount: selectedAmount,
+                    transactionId: data.transactionId || data.paymentIntentId || 'TXN_' + Date.now(),
+                    method: method
+                });
+
+                // Show success
+                donateBtn.disabled = false;
+                donateBtn.classList.remove('loading');
+                setPaymentStatus('✅ Payment successful! Thank you for your donation.', 'success');
+
+                // Show modal
+                setTimeout(function() {
+                    successModal.classList.add('open');
+                }, 800);
+
+                // Reset form (optional)
+                // form.reset();
+            }
+
+            function handlePaymentError(message) {
+                console.error('❌ Payment error:', message);
+                donateBtn.disabled = false;
+                donateBtn.classList.remove('loading');
+                setPaymentStatus('❌ ' + message, 'error');
+            }
+
+            // ==========================================================
+            // 11. RECEIPT SENDING
+            // ==========================================================
+
+            async function sendReceipt(data) {
+                try {
+                    console.log('📧 Sending receipt:', data);
+
+                    // In production, call your server endpoint:
+                    /*
+                    await fetch(ENDPOINTS.sendReceipt, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            toEmail: data.email,
+                            donorName: data.name,
+                            amount: data.amount,
+                            transactionId: data.transactionId,
+                            paymentMethod: data.method
+                        })
+                    });
+                    */
+
+                    // Mock success
+                    console.log('📧 Receipt sent successfully (mock)');
+                } catch (error) {
+                    console.error('❌ Failed to send receipt:', error);
+                }
+            }
+
+            // ==========================================================
+            // 12. MODAL HANDLING
+            // ==========================================================
+
+            window.closeModal = function() {
+                successModal.classList.remove('open');
+                // Reset form
+                form.reset();
+                amountBtns.forEach(b => b.classList.remove('active'));
+                document.querySelector('.amount-btn[data-amount="10"]').classList.add('active');
+                selectedAmount = 10;
+                hidePaymentStatus();
+                // Redirect or stay
+                window.location.href = 'index.html';
+            };
+
+            successModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    window.closeModal();
+                }
+            });
+
+            // ==========================================================
+            // 13. NAVBAR SCROLL
+            // ==========================================================
+
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // ==========================================================
+            // 14. MOBILE MENU
+            // ==========================================================
+
             const hamburger = document.getElementById('hamburger');
             const mobileMenu = document.getElementById('mobileMenu');
             const overlay = document.getElementById('overlay');
@@ -906,115 +1628,41 @@
                 link.addEventListener('click', closeMenuFn);
             });
 
-            // ===== AMOUNT BUTTONS =====
-            const amountBtns = document.querySelectorAll('.amount-btn');
-            const customAmount = document.getElementById('customAmount');
-            let selectedAmount = 10;
+            // ==========================================================
+            // 15. INITIALIZE PAYMENT PROCESSORS
+            // ==========================================================
 
-            amountBtns.forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    amountBtns.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    selectedAmount = parseInt(this.dataset.amount);
-                    customAmount.value = '';
-                });
-            });
+            console.log('💛 DJML Foundation — Donate Page');
+            console.log('🔒 Stripe & PayPal integration ready (Test Mode)');
+            console.log('📝 Add your API keys to enable live payments:');
+            console.log('   - STRIPE_PUBLISHABLE_KEY');
+            console.log('   - PAYPAL_CLIENT_ID');
+            console.log('   - API_BASE_URL');
 
-            customAmount.addEventListener('input', function() {
-                amountBtns.forEach(b => b.classList.remove('active'));
-                if (this.value) {
-                    selectedAmount = parseFloat(this.value);
-                }
-            });
+            // Initialize Stripe
+            if (STRIPE_PUBLISHABLE_KEY && STRIPE_PUBLISHABLE_KEY !== 'pk_test_XXXXXXXXXXXXXXXXXXXXXXXX') {
+                initializeStripe();
+            } else {
+                console.warn('⚠️ Stripe key not configured. Add your publishable key.');
+            }
 
-            // ===== DONATION FORM =====
-            const form = document.getElementById('donationForm');
-            const donateBtn = document.getElementById('donateBtn');
+            // Initialize PayPal
+            if (PAYPAL_CLIENT_ID && PAYPAL_CLIENT_ID !== 'AYxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx') {
+                initializePayPal();
+            } else {
+                console.warn('⚠️ PayPal client ID not configured. Add your client ID.');
+            }
 
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
+            // ==========================================================
+            // 16. KEYBOARD SHORTCUTS
+            // ==========================================================
 
-                // Validate
-                const name = document.getElementById('fullName').value.trim();
-                const email = document.getElementById('email').value.trim();
-                const amount = customAmount.value ? parseFloat(customAmount.value) : selectedAmount;
-
-                if (!name || !email || !amount || amount < 1) {
-                    alert('Please fill in all required fields and enter a valid amount.');
-                    return;
-                }
-
-                if (!email.includes('@')) {
-                    alert('Please enter a valid email address.');
-                    return;
-                }
-
-                // Show loading state
-                donateBtn.disabled = true;
-                donateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-
-                // Simulate Stripe/PayPal integration
-                // In production, replace this with actual Stripe.js or PayPal SDK
-                setTimeout(function() {
-                    // Success
-                    document.getElementById('successModal').classList.add('open');
-                    donateBtn.disabled = false;
-                    donateBtn.innerHTML = '<i class="fas fa-hand-holding-heart"></i> Donate Now';
-
-                    // Reset form
-                    form.reset();
-                    amountBtns.forEach(b => b.classList.remove('active'));
-                    document.querySelector('.amount-btn[data-amount="10"]').classList.add('active');
-                    selectedAmount = 10;
-
-                    // Send email notification (simulated)
-                    console.log('Donation received:');
-                    console.log('Name:', name);
-                    console.log('Email:', email);
-                    console.log('Amount: $' + amount);
-                    console.log('Type:', document.querySelector('input[name="donationType"]:checked').value);
-                    console.log('Message:', document.getElementById('message').value);
-                    console.log('Dedication:', document.getElementById('dedication').value);
-
-                    // Track conversion (Google Analytics / Facebook Pixel)
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'conversion', {
-                            'send_to': 'AW-XXXXX/YYYYY',
-                            'value': amount,
-                            'currency': 'USD',
-                            'transaction_id': 'DJML-' + Date.now()
-                        });
-                    }
-
-                }, 2000);
-            });
-
-            // ===== MODAL =====
-            window.closeModal = function() {
-                document.getElementById('successModal').classList.remove('open');
-                window.location.href = 'index.html';
-            };
-
-            // Close modal on overlay click
-            document.getElementById('successModal').addEventListener('click', function(e) {
-                if (e.target === this) {
+            document.addEventListener('keydown', function(e) {
+                // Escape to close modal
+                if (e.key === 'Escape' && successModal.classList.contains('open')) {
                     window.closeModal();
                 }
             });
-
-            // ===== NAVBAR SCROLL =====
-            const navbar = document.getElementById('navbar');
-            window.addEventListener('scroll', function() {
-                if (window.pageYOffset > 50) {
-                    navbar.style.background = 'rgba(13,27,62,0.98)';
-                } else {
-                    navbar.style.background = 'rgba(13,27,62,0.95)';
-                }
-            });
-
-            console.log('💛 DJML Foundation — Donate Page');
-            console.log('🔒 Stripe integration ready for production keys.');
-            console.log('📧 Email notifications configured.');
 
         });
     </script>
