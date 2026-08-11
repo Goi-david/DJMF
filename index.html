@@ -875,7 +875,7 @@
         }
 
         /* ============================================
-                   VIDEO FEATURE SECTION — ENHANCED PLAYER
+                   VIDEO FEATURE SECTION (ENHANCED)
                    ============================================ */
         .video-feature {
             padding: 80px 0;
@@ -916,7 +916,6 @@
             }
         }
 
-        /* Video Content (Left) */
         .video-content {
             order: 1;
         }
@@ -987,7 +986,7 @@
             margin-top: 4px;
         }
 
-        /* Video Container (Right) — Enhanced Player */
+        /* ---- VIDEO CONTAINER WITH FULL CONTROLS ---- */
         .video-container {
             order: 0;
             position: relative;
@@ -998,7 +997,6 @@
             aspect-ratio: 1280 / 720;
             width: 100%;
             max-width: 100%;
-            background: #0a0a0a;
         }
         @media (min-width: 992px) {
             .video-container {
@@ -1019,14 +1017,14 @@
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 16px 20px 18px;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
-            z-index: 5;
+            background: linear-gradient(transparent, rgba(13, 27, 62, 0.85));
+            padding: 40px 20px 16px;
             opacity: 0;
             transition: opacity 0.4s ease;
+            z-index: 5;
         }
         .video-container:hover .video-controls,
-        .video-controls.show {
+        .video-container.controls-visible .video-controls {
             opacity: 1;
         }
 
@@ -1041,149 +1039,112 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            color: var(--white);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
             transition: var(--transition);
-            font-size: 0.95rem;
-            background: rgba(255, 255, 255, 0.06);
-            border: none;
-            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.06);
             flex-shrink: 0;
         }
         .video-controls .controls-row .ctrl-btn:hover {
-            color: var(--white);
-            background: rgba(244, 196, 48, 0.15);
-            transform: scale(1.1);
+            background: var(--gold);
+            color: var(--navy);
+            transform: scale(1.05);
         }
 
-        .video-controls .controls-row .progress-container {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-width: 100px;
+        .video-controls .controls-row .ctrl-btn.volume-btn {
+            font-size: 0.85rem;
         }
 
-        .video-controls .controls-row .progress-bar {
+        /* Progress Bar */
+        .video-progress {
             flex: 1;
+            min-width: 80px;
             height: 4px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
             cursor: pointer;
             position: relative;
             transition: height 0.2s ease;
-            min-width: 60px;
         }
-        .video-controls .controls-row .progress-bar:hover {
+        .video-progress:hover {
             height: 6px;
         }
-
-        .video-controls .controls-row .progress-bar .progress-fill {
+        .video-progress .progress-fill {
             height: 100%;
-            background: var(--gold-gradient);
-            border-radius: 4px;
             width: 0%;
-            position: relative;
+            background: var(--gold-gradient);
+            border-radius: 2px;
             transition: width 0.1s linear;
         }
-
-        .video-controls .controls-row .progress-bar .progress-fill::after {
-            content: '';
+        .video-progress .progress-thumb {
             position: absolute;
-            right: -6px;
             top: 50%;
-            transform: translateY(-50%);
-            width: 12px;
-            height: 12px;
+            left: 0%;
+            transform: translate(-50%, -50%);
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             background: var(--gold);
-            box-shadow: var(--shadow-gold);
             opacity: 0;
-            transition: opacity 0.2s;
+            transition: opacity 0.2s ease;
+            box-shadow: 0 0 20px rgba(244, 196, 48, 0.3);
         }
-        .video-controls .controls-row .progress-bar:hover .progress-fill::after {
+        .video-progress:hover .progress-thumb {
             opacity: 1;
         }
 
-        .video-controls .controls-row .time-display {
-            font-size: 0.75rem;
+        .video-controls .time-display {
             color: rgba(255, 255, 255, 0.6);
-            font-variant-numeric: tabular-nums;
+            font-size: 0.75rem;
+            font-weight: 500;
             letter-spacing: 0.5px;
-            white-space: nowrap;
-            min-width: 90px;
+            flex-shrink: 0;
+            min-width: 100px;
+            text-align: right;
         }
 
-        .video-controls .controls-row .volume-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .video-controls .controls-row .volume-container .volume-slider {
-            width: 60px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 4px;
-            cursor: pointer;
-            position: relative;
-            transition: width 0.3s;
-        }
-        .video-controls .controls-row .volume-container .volume-slider .volume-fill {
-            height: 100%;
-            background: var(--gold);
-            border-radius: 4px;
-            width: 80%;
-        }
-        .video-controls .controls-row .volume-container .volume-slider:hover {
-            height: 6px;
-        }
-
-        @media (max-width: 640px) {
-            .video-controls .controls-row .volume-container .volume-slider {
-                width: 40px;
-            }
-            .video-controls .controls-row .time-display {
-                font-size: 0.65rem;
-                min-width: 70px;
-            }
-            .video-controls {
-                padding: 12px 14px 14px;
-            }
-        }
-
-        /* Play Overlay (Initial) */
+        /* Play Overlay (fallback click) */
         .video-container .play-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(13, 27, 62, 0.25);
+            background: rgba(13, 27, 62, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: var(--transition);
             z-index: 3;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .video-container:hover .play-overlay {
+            opacity: 1;
+            pointer-events: auto;
         }
         .video-container .play-overlay:hover {
             background: rgba(13, 27, 62, 0.15);
         }
         .video-container .play-overlay .play-btn {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             background: var(--gold-gradient);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.6rem;
             color: var(--navy);
             box-shadow: var(--shadow-gold);
             transition: var(--transition);
             animation: pulse-play 2s infinite;
         }
         .video-container .play-overlay .play-btn:hover {
-            transform: scale(1.1);
+            transform: scale(1.08);
         }
         @keyframes pulse-play {
             0%,
@@ -1198,19 +1159,6 @@
         .video-container .play-overlay.hidden {
             opacity: 0;
             pointer-events: none;
-        }
-
-        /* Video Preview Thumbnail */
-        .video-container .video-preview {
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            background-size: cover;
-            background-position: center;
-            transition: opacity 0.6s ease;
-        }
-        .video-container .video-preview.hidden {
-            opacity: 0;
         }
 
         /* ============================================
@@ -1752,6 +1700,19 @@
             .video-content .impact-stats-mini {
                 gap: 16px;
             }
+
+            .video-controls .controls-row {
+                gap: 10px;
+            }
+            .video-controls .controls-row .ctrl-btn {
+                width: 30px;
+                height: 30px;
+                font-size: 0.75rem;
+            }
+            .video-controls .time-display {
+                font-size: 0.65rem;
+                min-width: 70px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -1789,7 +1750,14 @@
 
 <body>
 
- 
+    <!-- ===== PRE-LOADER ===== -->
+    <div class="loader" id="loader">
+        <div class="loader-ring"></div>
+        <div class="loader-text">DJML</div>
+        <div class="loader-progress">
+            <div class="loader-progress-bar" id="loaderProgress"></div>
+        </div>
+    </div>
 
     <!-- ===== OVERLAY ===== -->
     <div class="overlay" id="overlay"></div>
@@ -1843,13 +1811,13 @@
         </div>
     </nav>
 
-    <!-- ===== HERO ===== -->
+    <!-- ===== HERO WITH CUSTOM IMAGES ===== -->
     <section class="hero" id="home">
         <div class="hero-slideshow" id="heroSlideshow">
-            <!-- Nonprofit/Community-focused images -->
-            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=1600&q=80');"></div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=1600&q=80');"></div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1588072432836-f100acb02c6d?w=1600&q=80');"></div>
+            <!-- Custom nonprofit images -->
+            <div class="slide active" style="background-image: url('aid1.jpg');"></div>
+            <div class="slide" style="background-image: url('aaaa.jpg');"></div>
+            <div class="slide" style="background-image: url('bbbbnn.jpg');"></div>
         </div>
 
         <div class="slide-dots" id="slideDots">
@@ -1983,7 +1951,7 @@
     </section>
 
     <!-- ==========================================================
-    VIDEO FEATURE SECTION — ENHANCED PLAYER
+    VIDEO FEATURE SECTION (UPDATED CONTENT + FULL CONTROLS)
     ========================================================== -->
     <section class="video-feature" id="borehole-project" data-aos="fade-up">
         <div class="container">
@@ -2003,54 +1971,49 @@
                         Women and children walked miles daily, missing out on education and economic opportunities.
                     </p>
                     <p class="description">
-                        <strong>The Borehole Project was initiated as an inspection and assessment mission</strong>
-                        to understand the community's water needs. The findings revealed that the entire community
-                        depends on this single water point for their daily survival.
+                        <strong>This borehole inspection marks a critical step forward.</strong>
+                        The entire community currently depends on this single water point, creating significant
+                        strain and long queues. Our assessment revealed that <strong>more boreholes are urgently needed</strong>
+                        to reduce dependency on one source and ensure every family has reliable access to clean water.
                     </p>
-                    <p class="description">
-                        <strong>This one borehole serves over 2,000 people</strong>, but the demand far exceeds the supply.
-                        More boreholes and water infrastructure are urgently needed to ease the burden of dependence
-                        on a single source. <strong>Your support can help us drill more wells</strong> and bring
-                        sustainable water access to this community.
+                    <p class="description" style="color:var(--gold); font-weight:500;">
+                        <i class="fas fa-exclamation-triangle" style="color:var(--gold);"></i>
+                        One borehole is not enough. We are committed to drilling additional boreholes to serve the growing needs of this community.
                     </p>
                     <div class="impact-stats-mini">
                         <div class="stat">
                             <span class="number">2,000+</span>
-                            <span class="label">People Served</span>
+                            <span class="label">People Currently Served</span>
                         </div>
                         <div class="stat">
-                            <span class="number">1</span>
-                            <span class="label">Borehole (Inspection)</span>
+                            <span class="number">5+</span>
+                            <span class="label">Additional Boreholes Needed</span>
                         </div>
                         <div class="stat">
-                            <span class="number">More</span>
-                            <span class="label">Boreholes Needed</span>
+                            <span class="number">4+</span>
+                            <span class="label">Kilometers Walked Daily</span>
                         </div>
                     </div>
                     <a href="donate.html" class="btn btn-primary">
-                        <i class="fas fa-tint"></i> Help Drill More Boreholes
+                        <i class="fas fa-tint"></i> Help Fund More Boreholes
                     </a>
                 </div>
 
-                <!-- Video Container (Right) — Enhanced Player -->
+                <!-- Video Container (Right) with Full Controls -->
                 <div class="video-container" data-aos="fade-left">
-                    <!-- Preview Thumbnail -->
-                    <div class="video-preview" id="videoPreview" style="background-image: url('https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=800&q=80');"></div>
-
-                    <!-- Video Element -->
                     <video id="boreholeVideo" preload="metadata" poster="https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=800&q=80">
                         <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
 
-                    <!-- Play Overlay -->
+                    <!-- Play Overlay (visible on hover) -->
                     <div class="play-overlay" id="videoOverlay">
                         <div class="play-btn">
                             <i class="fas fa-play"></i>
                         </div>
                     </div>
 
-                    <!-- Custom Controls -->
+                    <!-- Custom Video Controls -->
                     <div class="video-controls" id="videoControls">
                         <div class="controls-row">
                             <!-- Play/Pause -->
@@ -2058,28 +2021,23 @@
                                 <i class="fas fa-play"></i>
                             </button>
 
-                            <!-- Progress Bar -->
-                            <div class="progress-container">
-                                <div class="progress-bar" id="progressBar">
-                                    <div class="progress-fill" id="progressFill"></div>
-                                </div>
-                                <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
-                            </div>
-
                             <!-- Volume -->
-                            <div class="volume-container">
-                                <button class="ctrl-btn" id="volumeBtn" aria-label="Toggle volume">
-                                    <i class="fas fa-volume-up"></i>
-                                </button>
-                                <div class="volume-slider" id="volumeSlider">
-                                    <div class="volume-fill" id="volumeFill"></div>
-                                </div>
+                            <button class="ctrl-btn volume-btn" id="volumeBtn" aria-label="Toggle Mute">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+
+                            <!-- Volume Slider -->
+                            <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1"
+                            style="width:80px; height:4px; -webkit-appearance:none; appearance:none; background:rgba(255,255,255,0.2); border-radius:2px; outline:none;" />
+
+                            <!-- Progress Bar -->
+                            <div class="video-progress" id="videoProgress">
+                                <div class="progress-fill" id="progressFill"></div>
+                                <div class="progress-thumb" id="progressThumb"></div>
                             </div>
 
-                            <!-- Fullscreen -->
-                            <button class="ctrl-btn" id="fullscreenBtn" aria-label="Fullscreen">
-                                <i class="fas fa-expand"></i>
-                            </button>
+                            <!-- Time Display -->
+                            <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
                         </div>
                     </div>
                 </div>
@@ -2469,178 +2427,147 @@
             });
 
             // ==========================================================
-            // ENHANCED VIDEO PLAYER
+            // VIDEO PLAYER WITH FULL CONTROLS
             // ==========================================================
             const video = document.getElementById('boreholeVideo');
-            const videoContainer = document.querySelector('.video-container');
-            const playOverlay = document.getElementById('videoOverlay');
+            const overlayBtn = document.getElementById('videoOverlay');
             const playPauseBtn = document.getElementById('playPauseBtn');
-            const progressBar = document.getElementById('progressBar');
-            const progressFill = document.getElementById('progressFill');
-            const timeDisplay = document.getElementById('timeDisplay');
             const volumeBtn = document.getElementById('volumeBtn');
             const volumeSlider = document.getElementById('volumeSlider');
-            const volumeFill = document.getElementById('volumeFill');
-            const fullscreenBtn = document.getElementById('fullscreenBtn');
-            const videoControls = document.getElementById('videoControls');
-            const videoPreview = document.getElementById('videoPreview');
+            const videoProgress = document.getElementById('videoProgress');
+            const progressFill = document.getElementById('progressFill');
+            const progressThumb = document.getElementById('progressThumb');
+            const timeDisplay = document.getElementById('timeDisplay');
+            const controls = document.getElementById('videoControls');
 
             let controlsTimeout;
-            let isControlsVisible = true;
+            let isDragging = false;
 
-            // ---- Show controls on hover ----
-            videoContainer.addEventListener('mouseenter', function() {
-                videoControls.classList.add('show');
-                clearTimeout(controlsTimeout);
-            });
-
-            videoContainer.addEventListener('mouseleave', function() {
-                controlsTimeout = setTimeout(function() {
-                    if (!video.paused) {
-                        videoControls.classList.remove('show');
-                    }
-                }, 2500);
-            });
-
-            // ---- Toggle play/pause ----
+            // ---- Play/Pause ----
             function togglePlay() {
                 if (video.paused) {
                     video.play();
-                    playOverlay.classList.add('hidden');
-                    videoPreview.classList.add('hidden');
+                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                    overlayBtn.classList.add('hidden');
                 } else {
                     video.pause();
-                }
-                updatePlayButton();
-            }
-
-            function updatePlayButton() {
-                const icon = playPauseBtn.querySelector('i');
-                if (video.paused) {
-                    icon.className = 'fas fa-play';
-                    videoControls.classList.add('show');
-                } else {
-                    icon.className = 'fas fa-pause';
-                    // Auto-hide controls after 2.5s of playing
-                    clearTimeout(controlsTimeout);
-                    controlsTimeout = setTimeout(function() {
-                        videoControls.classList.remove('show');
-                    }, 2500);
+                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    overlayBtn.classList.remove('hidden');
                 }
             }
 
-            // Click events
-            playOverlay.addEventListener('click', togglePlay);
             playPauseBtn.addEventListener('click', togglePlay);
 
-            video.addEventListener('play', function() {
-                playOverlay.classList.add('hidden');
-                videoPreview.classList.add('hidden');
-                updatePlayButton();
-                // Show controls briefly
-                videoControls.classList.add('show');
+            overlayBtn.addEventListener('click', function() {
+                togglePlay();
+                // Show controls when clicked
+                controls.classList.add('controls-visible');
                 clearTimeout(controlsTimeout);
                 controlsTimeout = setTimeout(function() {
-                    videoControls.classList.remove('show');
-                }, 2500);
+                    controls.classList.remove('controls-visible');
+                }, 3000);
             });
 
-            video.addEventListener('pause', function() {
-                updatePlayButton();
-                videoControls.classList.add('show');
+            // Click on video to toggle play/pause
+            video.addEventListener('click', function() {
+                togglePlay();
+                controls.classList.add('controls-visible');
+                clearTimeout(controlsTimeout);
+                controlsTimeout = setTimeout(function() {
+                    controls.classList.remove('controls-visible');
+                }, 3000);
             });
 
-            video.addEventListener('ended', function() {
-                playOverlay.classList.remove('hidden');
-                updatePlayButton();
-                videoControls.classList.add('show');
+            // Show controls on hover
+            video.addEventListener('mouseenter', function() {
+                controls.classList.add('controls-visible');
+                clearTimeout(controlsTimeout);
+            });
+
+            video.addEventListener('mouseleave', function() {
+                controlsTimeout = setTimeout(function() {
+                    if (!video.paused) {
+                        controls.classList.remove('controls-visible');
+                    }
+                }, 2000);
+            });
+
+            // ---- Volume ----
+            volumeBtn.addEventListener('click', function() {
+                if (video.muted) {
+                    video.muted = false;
+                    volumeSlider.value = video.volume;
+                    volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                } else {
+                    video.muted = true;
+                    volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                }
+            });
+
+            volumeSlider.addEventListener('input', function() {
+                video.volume = parseFloat(this.value);
+                video.muted = false;
+                volumeBtn.innerHTML = video.volume > 0 ? '<i class="fas fa-volume-up"></i>' :
+                    '<i class="fas fa-volume-off"></i>';
             });
 
             // ---- Progress Bar ----
-            video.addEventListener('timeupdate', function() {
-                const percent = (video.currentTime / video.duration) * 100;
-                progressFill.style.width = percent + '%';
-                updateTimeDisplay();
-            });
-
-            function updateTimeDisplay() {
+            function updateProgress() {
+                if (!isDragging) {
+                    const percent = (video.currentTime / video.duration) * 100;
+                    progressFill.style.width = percent + '%';
+                    progressThumb.style.left = percent + '%';
+                }
+                // Update time display
                 const current = formatTime(video.currentTime);
-                const total = formatTime(video.duration);
-                timeDisplay.textContent = current + ' / ' + total;
+                const duration = formatTime(video.duration);
+                timeDisplay.textContent = current + ' / ' + duration;
             }
 
             function formatTime(seconds) {
-                if (isNaN(seconds) || !isFinite(seconds)) return '0:00';
+                if (isNaN(seconds)) return '0:00';
                 const mins = Math.floor(seconds / 60);
                 const secs = Math.floor(seconds % 60);
                 return mins + ':' + (secs < 10 ? '0' : '') + secs;
             }
 
-            // Click on progress bar to seek
-            progressBar.addEventListener('click', function(e) {
+            video.addEventListener('timeupdate', updateProgress);
+
+            video.addEventListener('loadedmetadata', function() {
+                timeDisplay.textContent = '0:00 / ' + formatTime(video.duration);
+            });
+
+            // ---- Seek on progress bar ----
+            videoProgress.addEventListener('mousedown', function(e) {
+                isDragging = true;
                 const rect = this.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const percent = x / rect.width;
+                const percent = (e.clientX - rect.left) / rect.width;
                 video.currentTime = percent * video.duration;
+                progressFill.style.width = (percent * 100) + '%';
+                progressThumb.style.left = (percent * 100) + '%';
             });
 
-            // ---- Volume Control ----
-            let isMuted = false;
-
-            volumeSlider.addEventListener('click', function(e) {
-                const rect = this.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const percent = Math.min(Math.max(x / rect.width, 0), 1);
-                video.volume = percent;
-                volumeFill.style.width = (percent * 100) + '%';
-                updateVolumeIcon();
-            });
-
-            volumeBtn.addEventListener('click', function() {
-                isMuted = !isMuted;
-                video.muted = isMuted;
-                updateVolumeIcon();
-            });
-
-            video.addEventListener('volumechange', function() {
-                const percent = video.volume * 100;
-                volumeFill.style.width = percent + '%';
-                updateVolumeIcon();
-            });
-
-            function updateVolumeIcon() {
-                const icon = volumeBtn.querySelector('i');
-                if (video.muted || video.volume === 0) {
-                    icon.className = 'fas fa-volume-mute';
-                } else if (video.volume < 0.5) {
-                    icon.className = 'fas fa-volume-down';
-                } else {
-                    icon.className = 'fas fa-volume-up';
+            document.addEventListener('mousemove', function(e) {
+                if (isDragging) {
+                    const rect = videoProgress.getBoundingClientRect();
+                    let percent = (e.clientX - rect.left) / rect.width;
+                    percent = Math.max(0, Math.min(1, percent));
+                    video.currentTime = percent * video.duration;
+                    progressFill.style.width = (percent * 100) + '%';
+                    progressThumb.style.left = (percent * 100) + '%';
                 }
-            }
+            });
 
-            // ---- Fullscreen ----
-            fullscreenBtn.addEventListener('click', function() {
-                if (!document.fullscreenElement) {
-                    videoContainer.requestFullscreen().catch(function() {
-                        // Fallback for browsers that don't support fullscreen on video container
-                        document.documentElement.requestFullscreen();
-                    });
-                } else {
-                    document.exitFullscreen();
-                }
+            document.addEventListener('mouseup', function() {
+                isDragging = false;
             });
 
             // ---- Keyboard shortcuts ----
             document.addEventListener('keydown', function(e) {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-
-                if (e.key === ' ' || e.key === 'k') {
+                if (e.target.tagName === 'INPUT') return;
+                if (e.key === ' ' || e.key === 'Space') {
                     e.preventDefault();
                     togglePlay();
-                }
-                if (e.key === 'f') {
-                    fullscreenBtn.click();
                 }
                 if (e.key === 'ArrowRight') {
                     video.currentTime = Math.min(video.currentTime + 5, video.duration);
@@ -2648,17 +2575,27 @@
                 if (e.key === 'ArrowLeft') {
                     video.currentTime = Math.max(video.currentTime - 5, 0);
                 }
+                if (e.key === 'ArrowUp') {
+                    video.volume = Math.min(1, video.volume + 0.1);
+                    volumeSlider.value = video.volume;
+                }
+                if (e.key === 'ArrowDown') {
+                    video.volume = Math.max(0, video.volume - 0.1);
+                    volumeSlider.value = video.volume;
+                }
+                if (e.key === 'm') {
+                    video.muted = !video.muted;
+                    volumeBtn.innerHTML = video.muted ? '<i class="fas fa-volume-mute"></i>' :
+                        '<i class="fas fa-volume-up"></i>';
+                }
             });
 
-            // ---- Initialize ----
-            updateTimeDisplay();
-            updateVolumeIcon();
-
-            // Show controls on load
-            videoControls.classList.add('show');
-            setTimeout(function() {
-                videoControls.classList.remove('show');
-            }, 3000);
+            // ---- End of video ----
+            video.addEventListener('ended', function() {
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                overlayBtn.classList.remove('hidden');
+                controls.classList.add('controls-visible');
+            });
 
             // ===== ACTIVE NAV LINK =====
             const sections = document.querySelectorAll('section[id], .hero');
@@ -2682,8 +2619,9 @@
             });
 
             console.log('🌟 DJML Foundation — Empowering South Sudan\'s Future');
-            console.log('💧 Borehole Project — Inspection & Needs Assessment');
-            console.log('🎬 Enhanced video player with full controls loaded.');
+            console.log('💧 Borehole Project: Inspection complete. More boreholes needed.');
+            console.log('🎥 Full video controls enabled: play, pause, volume, seek, keyboard shortcuts.');
+            console.log('🖼️ Custom banners: aid1.jpg, aaaa.jpg, bbbbnn.jpg');
 
         });
     </script>
