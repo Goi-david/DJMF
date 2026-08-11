@@ -475,7 +475,7 @@
         }
 
         /* ============================================
-                   HERO WITH ROTATING BANNERS + PARALLAX
+                   HERO WITH ROTATING BANNERS
                    ============================================ */
         .hero {
             min-height: 100vh;
@@ -674,7 +674,6 @@
             font-weight: 400;
         }
 
-        /* Scroll indicator */
         .scroll-indicator {
             position: absolute;
             bottom: 90px;
@@ -731,7 +730,7 @@
         }
 
         /* ============================================
-                   MISSION STRIP (Parallax)
+                   MISSION STRIP
                    ============================================ */
         .mission-strip {
             background: var(--navy);
@@ -802,7 +801,283 @@
         }
 
         /* ============================================
-                   PROGRAMS (Hover 3D Tilt)
+                   PARTNERS SECTION (NEW)
+                   ============================================ */
+        .partners-section {
+            padding: 60px 0 80px;
+            background: var(--white);
+            border-bottom: 1px solid rgba(13, 27, 62, 0.04);
+            position: relative;
+            overflow: hidden;
+        }
+        .partners-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gold-gradient);
+            opacity: 0.3;
+        }
+
+        .partners-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .partners-header .section-sub {
+            margin: 0 auto;
+        }
+
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 30px;
+            align-items: center;
+            justify-items: center;
+        }
+
+        .partner-logo {
+            width: 100%;
+            max-width: 200px;
+            padding: 20px;
+            text-align: center;
+            transition: var(--transition);
+            opacity: 0.6;
+            filter: grayscale(100%);
+            border: 1px solid rgba(13, 27, 62, 0.04);
+            border-radius: var(--radius);
+            background: var(--off-white);
+        }
+        .partner-logo:hover {
+            opacity: 1;
+            filter: grayscale(0%);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-dark);
+            border-color: rgba(244, 196, 48, 0.15);
+        }
+        .partner-logo .logo-placeholder {
+            font-size: 3rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .partner-logo .logo-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--navy);
+            letter-spacing: 0.5px;
+        }
+        .partner-logo .logo-sub {
+            font-size: 0.7rem;
+            color: var(--gray);
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* ============================================
+                   VIDEO FEATURE SECTION (NEW)
+                   ============================================ */
+        .video-feature {
+            padding: 80px 0;
+            background: var(--off-white);
+            position: relative;
+            overflow: hidden;
+        }
+        .video-feature::before {
+            content: '⭐⭐';
+            position: absolute;
+            font-size: 250px;
+            opacity: 0.02;
+            right: -80px;
+            bottom: -100px;
+            pointer-events: none;
+        }
+
+        .video-feature .section-label {
+            margin-bottom: 4px;
+        }
+        .video-feature .section-title {
+            margin-bottom: 8px;
+        }
+        .video-feature .section-sub {
+            margin-bottom: 40px;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        @media (min-width: 992px) {
+            .video-grid {
+                grid-template-columns: 1fr 1.4fr;
+                gap: 50px;
+            }
+        }
+
+        /* Video Content (Left Side - Text) */
+        .video-content {
+            order: 1;
+        }
+        @media (min-width: 992px) {
+            .video-content {
+                order: 0;
+            }
+        }
+
+        .video-content .feature-tag {
+            display: inline-block;
+            background: rgba(244, 196, 48, 0.08);
+            color: var(--gold);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 4px 16px;
+            border-radius: 50px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(244, 196, 48, 0.12);
+        }
+
+        .video-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+            color: var(--navy);
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+        .video-content h3 .highlight {
+            color: var(--gold);
+        }
+
+        .video-content .description {
+            color: #555;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .video-content .impact-stats-mini {
+            display: flex;
+            gap: 30px;
+            margin: 16px 0 24px;
+            flex-wrap: wrap;
+        }
+        .video-content .impact-stats-mini .stat {
+            display: flex;
+            flex-direction: column;
+        }
+        .video-content .impact-stats-mini .stat .number {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+        }
+        .video-content .impact-stats-mini .stat .label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+
+        .video-content .btn {
+            margin-top: 4px;
+        }
+
+        /* Video Container (Right Side) */
+        .video-container {
+            order: 0;
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-dark);
+            background: var(--navy);
+            aspect-ratio: 1280 / 720;
+            width: 100%;
+            max-width: 100%;
+        }
+        @media (min-width: 992px) {
+            .video-container {
+                order: 1;
+            }
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .video-container .play-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(13, 27, 62, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 2;
+        }
+        .video-container .play-overlay:hover {
+            background: rgba(13, 27, 62, 0.2);
+        }
+        .video-container .play-overlay .play-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--gold-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--navy);
+            box-shadow: var(--shadow-gold);
+            transition: var(--transition);
+            animation: pulse-play 2s infinite;
+        }
+        .video-container .play-overlay .play-btn:hover {
+            transform: scale(1.1);
+        }
+        @keyframes pulse-play {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(244, 196, 48, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 20px rgba(244, 196, 48, 0);
+            }
+        }
+
+        .video-container .play-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .video-container .video-badge {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            z-index: 3;
+            background: rgba(13, 27, 62, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .video-container .video-badge i {
+            color: var(--gold);
+            margin-right: 4px;
+        }
+
+        /* ============================================
+                   PROGRAMS SECTION
                    ============================================ */
         .programs-section {
             background: var(--off-white);
@@ -866,11 +1141,6 @@
             box-shadow: var(--shadow-dark);
             border-color: rgba(244, 196, 48, 0.2);
         }
-        .program-card .icon {
-            font-size: 3rem;
-            margin-bottom: 16px;
-            display: block;
-        }
         .program-card .icon-wrapper {
             width: 70px;
             height: 70px;
@@ -909,7 +1179,7 @@
         }
 
         /* ============================================
-                   IMPACT SECTION (Parallax Counters)
+                   IMPACT SECTION
                    ============================================ */
         .impact-section {
             background: var(--navy);
@@ -985,7 +1255,7 @@
         }
 
         /* ============================================
-                   TESTIMONIALS (Animated)
+                   TESTIMONIALS
                    ============================================ */
         .testimonials-section {
             background: var(--white);
@@ -1076,7 +1346,7 @@
         }
 
         /* ============================================
-                   CTA BANNER (Parallax)
+                   CTA BANNER
                    ============================================ */
         .cta-banner {
             padding: 80px 0;
@@ -1327,6 +1597,24 @@
             .navbar-brand .stars {
                 font-size: 0.9rem;
             }
+
+            .partners-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+            .partner-logo {
+                max-width: 140px;
+                padding: 12px;
+            }
+
+            .video-container .play-overlay .play-btn {
+                width: 56px;
+                height: 56px;
+                font-size: 1.4rem;
+            }
+            .video-content .impact-stats-mini {
+                gap: 16px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -1336,6 +1624,27 @@
             }
             .mission-stats {
                 justify-content: center;
+            }
+            .video-grid {
+                gap: 30px;
+            }
+            .video-container {
+                aspect-ratio: 16 / 9;
+            }
+            .video-content .impact-stats-mini {
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+            .video-content {
+                order: 0;
+            }
+            .video-container {
+                order: 1;
             }
         }
     </style>
@@ -1489,7 +1798,129 @@
         </div>
     </section>
 
-    <!-- ===== PROGRAMS ===== -->
+    <!-- ==========================================================
+    PARTNERS SECTION (NEW)
+    ========================================================== -->
+    <section class="partners-section" data-aos="fade-up">
+        <div class="container">
+            <div class="partners-header">
+                <span class="section-label">Our Partners</span>
+                <h2 class="section-title">In Partnership <span class="gold-text">With</span></h2>
+                <p class="section-sub">Collaborating with organizations that share our vision for a better South Sudan.</p>
+            </div>
+
+            <div class="partners-grid">
+                <!-- Partner 1 -->
+                <div class="partner-logo" data-aos="zoom-in" data-aos-delay="100">
+                    <span class="logo-placeholder">🏛️</span>
+                    <span class="logo-name">Partner Name 1</span>
+                    <span class="logo-sub">Organization Type</span>
+                </div>
+                <!-- Partner 2 -->
+                <div class="partner-logo" data-aos="zoom-in" data-aos-delay="150">
+                    <span class="logo-placeholder">🌍</span>
+                    <span class="logo-name">Partner Name 2</span>
+                    <span class="logo-sub">Organization Type</span>
+                </div>
+                <!-- Partner 3 -->
+                <div class="partner-logo" data-aos="zoom-in" data-aos-delay="200">
+                    <span class="logo-placeholder">🤝</span>
+                    <span class="logo-name">Partner Name 3</span>
+                    <span class="logo-sub">Organization Type</span>
+                </div>
+                <!-- Partner 4 -->
+                <div class="partner-logo" data-aos="zoom-in" data-aos-delay="250">
+                    <span class="logo-placeholder">💡</span>
+                    <span class="logo-name">Partner Name 4</span>
+                    <span class="logo-sub">Organization Type</span>
+                </div>
+                <!-- Partner 5 -->
+                <div class="partner-logo" data-aos="zoom-in" data-aos-delay="300">
+                    <span class="logo-placeholder">🌟</span>
+                    <span class="logo-name">Partner Name 5</span>
+                    <span class="logo-sub">Organization Type</span>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin-top:32px;" data-aos="fade-up">
+                <p style="color:var(--gray); font-size:0.9rem;">
+                    <i class="fas fa-handshake" style="color:var(--gold);"></i>
+                    Interested in partnering with us? <a href="about.html" style="color:var(--gold); font-weight:600;">Get in touch</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================
+    VIDEO FEATURE SECTION (NEW)
+    ========================================================== -->
+    <section class="video-feature" id="borehole-project" data-aos="fade-up">
+        <div class="container">
+            <div style="text-align:left;" data-aos="fade-up">
+                <span class="section-label">Featured Project</span>
+                <h2 class="section-title">Borehole Project <span class="gold-text">Duk County</span></h2>
+                <p class="section-sub">Bringing clean water and hope to the heart of South Sudan.</p>
+            </div>
+
+            <div class="video-grid">
+                <!-- Text Content (Left) -->
+                <div class="video-content" data-aos="fade-right">
+                    <span class="feature-tag"><i class="fas fa-tint" style="margin-right:6px;"></i> Clean Water Initiative</span>
+                    <h3>Quenching Thirst, <span class="highlight">Building Futures</span></h3>
+                    <p class="description">
+                        In the remote communities of Duk County, access to clean water has always been a challenge.
+                        Women and children walked miles daily, missing out on education and economic opportunities.
+                    </p>
+                    <p class="description">
+                        <strong>Thanks to the Borehole Project, that story is changing.</strong>
+                        This life-giving initiative now provides sustainable clean water to over 2,000 people,
+                        reducing waterborne diseases by 70% and allowing children — especially girls — to return
+                        to school.
+                    </p>
+                    <div class="impact-stats-mini">
+                        <div class="stat">
+                            <span class="number">2,000+</span>
+                            <span class="label">People Served</span>
+                        </div>
+                        <div class="stat">
+                            <span class="number">70%</span>
+                            <span class="label">Disease Reduction</span>
+                        </div>
+                        <div class="stat">
+                            <span class="number">5</span>
+                            <span class="label">Boreholes Drilled</span>
+                        </div>
+                    </div>
+                    <a href="programs.html" class="btn btn-primary">
+                        <i class="fas fa-tint"></i> Learn About Our Water Projects
+                    </a>
+                </div>
+
+                <!-- Video Container (Right) -->
+                <div class="video-container" data-aos="fade-left">
+                    <video id="boreholeVideo" preload="metadata">
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <!-- Play Overlay -->
+                    <div class="play-overlay" id="videoOverlay">
+                        <div class="play-btn">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+
+                    <div class="video-badge">
+                        <i class="fas fa-video"></i> 1280x720 · 24fps
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================
+    PROGRAMS SECTION
+    ========================================================== -->
     <section class="programs-section section-padding" id="programs">
         <div class="container">
             <span class="section-label" data-aos="fade-up">What We Do</span>
@@ -1505,7 +1936,7 @@
                     <div class="icon-wrapper">📚</div>
                     <h3>Education</h3>
                     <p>Providing access to quality education, school supplies, and scholarships for underprivileged children and youth in South Sudan.</p>
-                    <a href="programs.html#education" class="learn-more">Learn More <i class="fas fa-arrow-right"></i></a>
+                    <a href="programs.html" class="learn-more">Learn More <i class="fas fa-arrow-right"></i></a>
                 </div>
                 <div class="program-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="icon-wrapper">🏥</div>
@@ -1529,7 +1960,9 @@
         </div>
     </section>
 
-    <!-- ===== IMPACT ===== -->
+    <!-- ==========================================================
+    IMPACT SECTION
+    ========================================================== -->
     <section class="impact-section section-padding" id="impact">
         <div class="bg-pattern"></div>
         <span class="bg-stars">⭐⭐</span>
@@ -1569,7 +2002,9 @@
         </div>
     </section>
 
-    <!-- ===== TESTIMONIALS ===== -->
+    <!-- ==========================================================
+    TESTIMONIALS
+    ========================================================== -->
     <section class="testimonials-section section-padding" id="testimonials">
         <div class="container">
             <span class="section-label" data-aos="fade-up">Testimonials</span>
@@ -1624,7 +2059,9 @@
         </div>
     </section>
 
-    <!-- ===== CTA BANNER ===== -->
+    <!-- ==========================================================
+    CTA BANNER
+    ========================================================== -->
     <section class="cta-banner" data-aos="zoom-in" data-aos-duration="800">
         <div class="container">
             <h2>Ready to Make a <span style="color: var(--gold);">Difference</span>?</h2>
@@ -1635,7 +2072,9 @@
         </div>
     </section>
 
-    <!-- ===== FOOTER ===== -->
+    <!-- ==========================================================
+    FOOTER
+    ========================================================== -->
     <footer class="footer" id="contact">
         <div class="container">
             <div class="footer-grid">
@@ -1686,21 +2125,26 @@
 
             <div class="footer-bottom">
                 <span>&copy; 2026 <span class="gold">Deng Johnson Malual Leek Foundation</span>. All rights reserved.</span>
+                <span>Built with <i class="fas fa-heart" style="color:var(--gold);"></i> for South Sudan</span>
             </div>
         </div>
     </footer>
 
-    <!-- ===== BACK TO TOP ===== -->
+    <!-- ==========================================================
+    BACK TO TOP
+    ========================================================== -->
     <button class="back-top" id="backTop" aria-label="Back to top">
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- ===== AOS ===== -->
+    <!-- ==========================================================
+    AOS
+    ========================================================== -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <!-- ============================================
-               JAVASCRIPT
-               ============================================ -->
+    <!-- ==========================================================
+    JAVASCRIPT
+    ========================================================== -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
@@ -1855,6 +2299,28 @@
                 counterObserver.observe(counter);
             });
 
+            // ===== VIDEO PLAYER =====
+            const video = document.getElementById('boreholeVideo');
+            const overlayBtn = document.getElementById('videoOverlay');
+
+            overlayBtn.addEventListener('click', function() {
+                if (video.paused) {
+                    video.play();
+                    this.classList.add('hidden');
+                } else {
+                    video.pause();
+                    this.classList.remove('hidden');
+                }
+            });
+
+            video.addEventListener('pause', function() {
+                overlayBtn.classList.remove('hidden');
+            });
+
+            video.addEventListener('ended', function() {
+                overlayBtn.classList.remove('hidden');
+            });
+
             // ===== ACTIVE NAV LINK =====
             const sections = document.querySelectorAll('section[id], .hero');
             const navLinks = document.querySelectorAll('.nav-links a, .mobile-menu ul a');
@@ -1877,8 +2343,8 @@
             });
 
             console.log('🌟 DJML Foundation — Empowering South Sudan\'s Future');
-            console.log('📄 Built with depth, animations, and full integration.');
-            console.log('💛 Donate page coming next with Stripe/PayPal integration.');
+            console.log('💧 Borehole Project featured with video player.');
+            console.log('🤝 Partners section ready for updates.');
 
         });
     </script>
